@@ -1,0 +1,2 @@
+wwwroot\styles.css
+C:\Users\Nikita\source\repos\KinopoiskApp\KinopoiskApp\wwwroot\styles.css

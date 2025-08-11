@@ -1,0 +1,93 @@
+﻿body
+{
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container
+{
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+h
+{
+    text-align: center;
+    color: #222;
+}
+
+.search-form
+{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+    .search-form input
+    {
+        padding: 8px;
+        font-size: 14px;
+        width: 60%;
+        border: 1px solid #ccc;
+        border-radius: 4px 0 0 4px;
+        outline: none;
+    }
+
+    .search-form button
+    {
+        padding: 8px 14px;
+        border: none;
+        background-color: #333;
+        color: #fff;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+    }
+
+        .search-form button:hover
+        {
+            background-color: #555;
+        }
+
+.movie-card
+{
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.poster
+{
+    width: 200px;
+    object-fit: cover;
+}
+
+.movie-info
+{
+    padding: 15px;
+    flex: 1;
+}
+
+    .movie-info p
+    {
+        margin: 6px 0;
+    }
+
+.plot
+{
+    font-style: italic;
+    color: #555;
+}
+
+.not-found
+{
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
