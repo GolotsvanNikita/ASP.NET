@@ -1,0 +1,23 @@
+﻿@{
+    int counter = 0;
+}
+
+<h1 class="display-4">Top 10 films</h1>
+<div class = "container">
+    @foreach (var film in ViewBag.Films)
+    {
+        ++counter;
+
+        <div class="card">
+            <div class = "poster">
+                <img src="@Url.Content($"~/images/film{counter}.png")" alt="@film.Name" />
+            </div>
+            <div class = "info">
+                <h3>@film.Name (@film.Year)</h3>
+                <p>Director: @film.Director</p>
+                <p>Genre: @film.Genre</p>
+                <p>Description: @film.Description</p>
+            </div>
+        </div>
+    }
+</div>
