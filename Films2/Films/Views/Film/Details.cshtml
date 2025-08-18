@@ -1,0 +1,26 @@
+﻿@model Films.Models.Film
+
+<h1>@Model.Name</h1>
+<div class="container single-card">
+    <div class="card">
+        <div class="poster">
+            <img src="@Url.Content(string.IsNullOrEmpty(Model.PosterPath) ? "~/images/default.png" : $"~/{Model.PosterPath}")" alt="@Model.Name" />
+        </div>
+        <div class="info">
+            <div>
+                <h3>@Model.Name (@Model.Year)</h3>
+                <p><strong>Director:</strong> @Model.Director</p>
+                <p><strong>Genre:</strong> @Model.Genre</p>
+                <p><strong>Description:</strong> @Model.Description</p>
+            </div>
+            <div class="btn-block">
+                <a asp-action="Edit" asp-controller="Film" asp-route-id="@Model.Id" class="custom-button primary-button">Edit</a>
+                <form asp-action="Delete" asp-controller="Film" method="post" style="display: inline;">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="custom-button danger-button">Delete</button>
+                </form>
+                <a asp-action="Index" class="custom-button secondary-button">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
