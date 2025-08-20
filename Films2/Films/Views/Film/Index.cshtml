@@ -29,7 +29,7 @@
 
 <h2>Add New Film</h2>
 <div class="form-container">
-    <form asp-action="Create" asp-controller="Film" method="post">
+    <form asp-action="Create" asp-controller="Film" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label asp-for="Name">Film Name</label>
             <input asp-for="Name" class="form-input" placeholder="Enter film name" />
@@ -54,6 +54,10 @@
             <label asp-for="Description">Description</label>
             <textarea asp-for="Description" class="form-textarea" placeholder="Enter film description"></textarea>
             <span asp-validation-for="Description" class="error-message"></span>
+        </div>
+        <div class="form-group">
+            <label for="uploded">Add poster</label>
+            <input type="file" name="uploded" />
         </div>
         <div class="btn-block">
             <button type="submit" class="custom-button primary-button">Add</button>
