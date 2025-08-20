@@ -3,7 +3,7 @@
 <h1>Edit Film</h1>
 
 <div class="form-container">
-    <form asp-action="Edit" asp-controller="Film" method="post">
+    <form asp-action="Edit" asp-controller="Film" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
 
         <div class="form-group">
@@ -34,6 +34,11 @@
             <label asp-for="Description">Description</label>
             <textarea asp-for="Description" class="form-textarea" placeholder="Enter film description"></textarea>
             <span asp-validation-for="Description" class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="uploded">Edit poster</label>
+            <input type="file" name="uploded" value="@Model.PosterPath"/>
         </div>
 
         <div class="btn-block">
