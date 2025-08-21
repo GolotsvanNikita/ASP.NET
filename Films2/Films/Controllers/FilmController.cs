@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Films.Controllers
 {
@@ -36,9 +37,9 @@ namespace Films.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Film film, IFormFile uploded)
+        public async Task<IActionResult> Edit(Film film, IFormFile uploaded)
         {
-            ModelState.Remove("uploded");
+            ModelState.Remove("uploaded");
 
             if (!ModelState.IsValid)
             {
@@ -58,14 +59,14 @@ namespace Films.Controllers
             updateFilm.Year = film.Year;
             updateFilm.Description = film.Description;
 
-            if (uploded != null)
+            if (uploaded != null)
             {
-                string path = "/images/" + uploded.FileName;
+                string path = "/images/" + uploaded.FileName;
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
-                    await uploded.CopyToAsync(fileStream);
+                    await uploaded.CopyToAsync(fileStream);
                 }
-                updateFilm.PosterPath = "images/" + uploded.FileName;
+                updateFilm.PosterPath = "images/" + uploaded.FileName;
             }
 
             await _context.SaveChangesAsync();
@@ -87,23 +88,37 @@ namespace Films.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Film film, IFormFile uploded)
+        public async Task<IActionResult> Create([Bind("Id,Name,Director,Year,Genre,Description")] Film film, IFormFile uploaded)
         {
+            ModelState.Remove("uploaded");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Films = await _context.Films.ToListAsync();
                 return View("Index", film);
             }
 
-            if (uploded != null)
+            bool exists = await _context.Films.AnyAsync(f =>
+            (f.Name != null && film.Name != null && f.Name.ToLower() == film.Name.ToLower()) &&
+            (f.Director != null && film.Director != null && f.Director.ToLower() == film.Director.ToLower()) &&
+            f.Year == film.Year);
+
+            if (exists)
             {
-                string path = "/images/" + uploded.FileName;
+                ModelState.AddModelError("", "This film already exists");
+                ViewBag.Films = await _context.Films.ToListAsync();
+                return View("Index", film);
+            }
+
+            if (uploaded != null)
+            {
+                string path = "/images/" + uploaded.FileName;
 
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
-                    await uploded.CopyToAsync(fileStream);
+                    await uploaded.CopyToAsync(fileStream);
                 }
-                film.PosterPath = "images/" + uploded.FileName;
+                film.PosterPath = "images/" + uploaded.FileName;
             }
 
             _context.Films.Add(film);

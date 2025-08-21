@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Films.Annotations;
 
 namespace Films.Models
 {
@@ -8,6 +9,7 @@ namespace Films.Models
         [Required(ErrorMessage = "Name is required")]
         public string? Name { get; set; }
         [Required(ErrorMessage = "Director is required")]
+        [ForbiddenDirectorsAnnotation(["DirectorX", "DirectorY", "DirectorZ", "DirectorJ"], ErrorMessage = "This director is forbidden")]
         public string? Director { get; set; }
         [Required(ErrorMessage = "Genre is required")]
         public string? Genre { get; set; }
