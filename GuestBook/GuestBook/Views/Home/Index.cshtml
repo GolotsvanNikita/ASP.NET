@@ -1,0 +1,36 @@
+﻿@model ICollection<GuestBook.Models.Message>
+
+@{
+    ViewBag.Title = "Guest book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Guest book</h1>
+
+@if (Context.Session.GetString("Name") != null)
+{
+    <form asp-action="AddMessage" method="post">
+        <div class="form-group">
+            <textarea name="message" rows="4" cols="50" placeholder="Enter message"></textarea>
+        </div>
+        <input type="submit" value="Add message" class="btn btn-primary" />
+    </form>
+}
+
+@foreach (var msg in Model)
+{
+    <table class="table table-bordered">
+        <tr>
+            <td>User:</td>
+            <td>@msg.User.Name</td>
+        </tr>
+        <tr>
+            <td>Message:</td>
+            <td>@msg.MessageText</td>
+        </tr>
+        <tr>
+            <td>Date:</td>
+            <td>@msg.Date.ToString("dd.MM.yyyy HH:mm:ss")</td>
+        </tr>
+    </table>
+}
