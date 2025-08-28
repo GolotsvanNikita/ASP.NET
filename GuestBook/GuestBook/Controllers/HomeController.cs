@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GuestBook.Models;
 using GuestBook.Repositories;
+using GuestBook.Filters;
 
 namespace GuestBook.Controllers
 {
+    [Culture]
     public class HomeController : Controller
     {
         private IRepository _repository;
@@ -16,6 +18,7 @@ namespace GuestBook.Controllers
         public IActionResult Index()
         {
             var messages = _repository.GetMessages();
+            HttpContext.Session.SetString("path", Request.Path);
             return View(messages);
         }
 

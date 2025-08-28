@@ -4,10 +4,12 @@ namespace GuestBook.Models
 {
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+                 ErrorMessageResourceName = "NameField")]
         public string? Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+                 ErrorMessageResourceName = "PassField")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
     }

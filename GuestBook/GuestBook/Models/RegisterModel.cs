@@ -4,15 +4,19 @@ namespace GuestBook.Models
 {
     public class RegisterModel
     {
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+                 ErrorMessageResourceName = "NameField")]
         public string? Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+                 ErrorMessageResourceName = "PassField")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
 
-        [Required]
-        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+                 ErrorMessageResourceName = "PassConfField")]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resources.Resource),
+                 ErrorMessageResourceName = "PassMatch")]
         [DataType(DataType.Password)]
         public string? PasswordConfirm { get; set; }
     }
