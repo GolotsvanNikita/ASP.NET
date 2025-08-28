@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Registration</h1>
+<h1>@Resource.RegisterText</h1>
 
 <hr />
 <div class="row">
@@ -13,22 +13,22 @@
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label">Login</label>
+                <label asp-for="Name" class="control-label">@Resource.NameOfUser</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label">Password</label>
+                <label asp-for="Password" class="control-label">@Resource.PassText</label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PasswordConfirm" class="control-label">Password confirm</label>
+                <label asp-for="PasswordConfirm" class="control-label">@Resource.PassConf</label>
                 <input asp-for="PasswordConfirm" class="form-control" />
                 <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Register" class="btn btn-primary" />
+                <input type="submit" value="@Resource.RegAction" class="btn btn-primary" />
             </div>
         </form>
     </div>

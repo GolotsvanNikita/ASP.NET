@@ -13,6 +13,14 @@ string? connection = builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(connection));
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+    options.Cookie.Name = "Session";
+
+});
+
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IPasswordHash, PasswordHash>();
 
