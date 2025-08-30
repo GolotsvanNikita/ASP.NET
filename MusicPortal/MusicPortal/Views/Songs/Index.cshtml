@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MusicPortal.Models.Song>;
+@{
+    ViewData["Title"] = "Songs";
+}
+
+
+<div class="container mt-4">
+    <h2 class="mb-4">Music Portal</h2>
+
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <div class="mb-3">
+            <a asp-action="Create" class="btn btn-primary"></a>
+        </div>   
+    }
+
+    @if (Model?.Any()== true)
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+            </table>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Genre?.Name ?? "Not named"</td>
+                        <td>@item.User?.Login ?? "Anonim"</td>
+                        <td>
+                            <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-success btn-sm">Download</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            List is empty.
+        </div>
+    }
+</div>
