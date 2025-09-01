@@ -1,31 +1,309 @@
-html {
-  font-size: 14px;
+body
+{
+    font-family: Tahoma, sans-serif;
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    background-image: url("/content/xp.jpg");
 }
 
-@media (min-width: 768px) {
-  html {
+.container
+{
+    background-color: #ffffff;
+    border: 1px solid #a3a3a3;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    opacity: 90%;
+}
+
+h2
+{
+    color: #0e75da;
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #0e75da;
+    padding-bottom: 5px;
+}
+
+.navbar
+{
+    background: linear-gradient(to bottom, #0e75da, #ffffff);
+    border-bottom: 2px solid #a3a3a3;
+    padding: 10px;
+}
+
+.navbar-brand
+{
+    color: #ffffff !important; 
+    font-weight: bold;
+}
+
+.xp-window-buttons
+{
+    display: flex;
+    width: 35px;
+    height: 35px;
+    gap: 2px;
+    padding-left: 1150px;
+}
+
+.nav-link
+{
+    color: white;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    font-size: 13px;
+}
+
+    .nav-link:hover
+    {
+        background-color: #d4d4d4;
+        border: 1px solid #a3a3a3;
+    }
+
+.btn
+{
+    background: linear-gradient(to bottom, #f0f0f0, #d4d4d4);
+    border: 1px solid #a3a3a3;
+    color: #000000;
+    padding: 5px 10px;
+    font-weight: bold;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+}
+
+.btn-primary
+{
+    background: linear-gradient(to bottom, #0e75da, #ffffff);
+    color: #ffffff;
+    border: 1px solid #0e75da;
+}
+
+.btn-success
+{
+    background: linear-gradient(to bottom, #00cc00, #ffffff);
+    color: #ffffff;
+    border: 1px solid #00cc00;
+}
+
+.btn-warning
+{
+    background: linear-gradient(to bottom, #ffcc00, #ffffff);
+    color: #000000;
+    border: 1px solid #ffcc00;
+}
+
+.btn-danger
+{
+    background: linear-gradient(to bottom, #ff0000, #ffffff);
+    color: #ffffff;
+    border: 1px solid #ff0000;
+}
+
+.btn:hover
+{
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.form-control
+{
+    background-color: #ffffff;
+    border: 1px solid #a3a3a3;
+    padding: 5px;
+    font-size: 13px;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.form-group
+{
+    margin-bottom: 10px;
+}
+
+.table
+{
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border: 1px solid #a3a3a3;
+}
+
+    .table th, .table td
+    {
+        border: 1px solid #a3a3a3;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table thead
+    {
+        background: linear-gradient(to bottom, #f0f0f0, #d4d4d4);
+        font-weight: bold;
+    }
+
+.table-hover tbody tr:hover
+{
+    background-color: #d4d4d4;
+}
+
+.card
+{
+    background-color: #ffffff;
+    border: 1px solid #a3a3a3;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+}
+
+.card-body
+{
+    padding: 10px;
+}
+
+.card-title
+{
+    color: #0e75da;
     font-size: 16px;
-  }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.card-subtitle
+{
+    color: #808080;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.card-text
+{
+    font-size: 13px;
 }
 
-body {
-  margin-bottom: 60px;
+.xp-player
+{
+    background: linear-gradient(to bottom, #f0f0f0, #d4d4d4);
+    border: 1px solid #a3a3a3;
+    padding: 10px;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.xp-player-controls
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.xp-btn
+{
+    background: linear-gradient(to bottom, #f0f0f0, #d4d4d4);
+    border: 1px solid #a3a3a3;
+    padding: 5px 10px;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+    .xp-btn:hover
+    {
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+    }
+
+.xp-seek-bar
+{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.xp-seek-slider
+{
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to bottom, #ffffff, #d4d4d4);
+    border: 1px solid #a3a3a3;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+    .xp-seek-slider::-webkit-slider-thumb
+    {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(to bottom, #0e75da, #ffffff);
+        border: 1px solid #0e75da;
+        cursor: pointer;
+    }
+
+    .xp-seek-slider::-moz-range-thumb
+    {
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(to bottom, #0e75da, #ffffff);
+        border: 1px solid #0e75da;
+        cursor: pointer;
+    }
+
+.xp-time
+{
+    font-size: 12px;
+    color: #000000;
+}
+.alert
+{
+    background-color: #ffffcc;
+    border: 1px solid #ffcc00;
+    color: #000000;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.footer
+{
+    background: linear-gradient(to bottom, #0e75da, #ffffff);
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    border-top: 2px solid #a3a3a3;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+html
+{
+    position: relative;
+    min-height: 100%;
+}
+
+body
+{
+    margin-bottom: 60px;
+}
+
+@media (min-width: 768px)
+{
+    html
+    {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus
+{
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder
+{
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder
+{
+    text-align: start;
 }

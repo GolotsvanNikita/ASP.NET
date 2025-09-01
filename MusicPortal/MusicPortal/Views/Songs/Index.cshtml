@@ -1,45 +1,51 @@
-﻿@model IEnumerable<MusicPortal.Models.Song>;
+﻿@model IEnumerable<MusicPortal.Models.Song>
 @{
     ViewData["Title"] = "Songs";
 }
 
-
 <div class="container mt-4">
+    <div class="xp-window-buttons">
+        <img src="/content/buttons.png" alt="btnxp"></img>
+    </div>
+
     <h2 class="mb-4">Music Portal</h2>
 
-    @if (User.Identity?.IsAuthenticated ?? false)
+    @if (Context.Session.GetString("UserId") != null)
     {
         <div class="mb-3">
-            <a asp-action="Create" class="btn btn-primary"></a>
-        </div>   
+            <a asp-action="Create" class="btn btn-primary">Add song</a>
+        </div>
     }
 
-    @if (Model?.Any()== true)
+    @if (Model?.Any() == true)
     {
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Genre</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-            </table>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>@item.Genre?.Name ?? "Not named"</td>
-                        <td>@item.User?.Login ?? "Anonim"</td>
-                        <td>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Genre: @item.Genre?.Name</h6>
+                            <p class="card-text">Uploaded by: @item.User?.Login</p>
+                            @if (!string.IsNullOrEmpty(item.FilePath))
+                            {
+                                <div class="xp-player" data-song-id="@item.Id">
+                                    <audio id="audio-@item.Id" src="@item.FilePath"></audio>
+                                    <div class="xp-player-controls">
+                                        <button class="xp-btn xp-play-pause" data-action="play">Play</button>
+                                        <div class="xp-seek-bar">
+                                            <input type="range" class="xp-seek-slider" min="0" max="100" value="0" />
+                                            <span class="xp-time">00:00 / 00:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                             <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-success btn-sm">Download</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     }
     else
@@ -49,3 +55,8 @@
         </div>
     }
 </div>
+
+@section Scripts
+{
+    <script src="~/js/xpPlayer.js"></script>
+}

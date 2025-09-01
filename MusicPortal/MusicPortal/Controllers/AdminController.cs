@@ -1,36 +1,83 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.EntityFrameworkCore;
 using MusicPortal.Models;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
-using System.Text;
+using MusicPortal.Repositories;
+using System.Threading.Tasks;
 
 namespace MusicPortal.Controllers
 {
     public class AdminController : Controller
     {
-        private MusicPortalContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public AdminController(MusicPortalContext context)
+        public AdminController(IUserRepository userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
         }
 
-        public async Task<IActionResult> Users() 
+        private bool IsAdmin()
         {
-            var users = await _context.Users.ToListAsync();
+            return HttpContext.Session.GetString("IsAdmin") == "True";
+        }
+
+        public async Task<IActionResult> Users()
+        {
+            if (!IsAdmin())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var users = await _userRepository.GetAllUsersAsync();
             return View(users);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteUser(int id) 
+        public async Task<IActionResult> RegistrationRequests()
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user != null) 
+            if (!IsAdmin())
             {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                return RedirectToAction("Login", "Account");
+            }
+            var requests = await _userRepository.GetInactiveUsersAsync();
+            return View(requests);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            if (!IsAdmin())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            await _userRepository.DeleteUserAsync(id);
+            return RedirectToAction("RegistrationRequests");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActivateUser(int id)
+        {
+            if (!IsAdmin())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var user = await _userRepository.GetUserByIdAsync(id);
+            if (user != null)
+            {
+                user.IsActive = true;
+                await _userRepository.UpdateUserAsync(user);
+            }
+            return RedirectToAction("RegistrationRequests");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MakeAdmin(int id)
+        {
+            if (!IsAdmin())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var user = await _userRepository.GetUserByIdAsync(id);
+            if (user != null)
+            {
+                user.IsAdmin = true;
+                await _userRepository.UpdateUserAsync(user);
             }
             return RedirectToAction("Users");
         }
