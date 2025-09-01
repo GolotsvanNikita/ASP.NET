@@ -1,12 +1,13 @@
 ﻿@model MusicPortal.Models.Song
 
 @{
-    ViewData["Title"] = "Add song";
+    ViewData["Title"] = "Edit song";
 }
 
 <div class="container mt-4">
-    <h2>Add new song</h2>
-    <form asp-action="Create" enctype="multipart/form-data">
+    <h2>Edit</h2>
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
         <div class="form-group">
             <label asp-for="Name">Name</label>
             <input asp-for="Name" class="form-control" />
@@ -18,9 +19,9 @@
             <span asp-validation-for="GenreId" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="upload">File</label>
+            <label for="upload">New file (optional)</label>
             <input type="file" name="upload" class="form-control-file" />
         </div>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </div>

@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MusicPortal.Models;
+using MusicPortal.Repositories;
+using MusicPortal.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +15,16 @@ string? connection = builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddDbContext<MusicPortalContext>(options => options.UseSqlServer(connection));
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<ISongRepository, SongRepository>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+app.UseStaticFiles();
 
 app.UseSession();
 

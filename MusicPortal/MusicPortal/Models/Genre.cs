@@ -6,8 +6,8 @@ namespace MusicPortal.Models
     {
         public int GenreId { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public virtual ICollection<Song> Songs { get; set; }
+        public virtual ICollection<Song>? Songs { get; set; }
     }
 }

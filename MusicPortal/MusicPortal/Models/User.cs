@@ -8,13 +8,17 @@ namespace MusicPortal.Models
         public int Id { get; set; }
         [Required]
         public string Login { get; set; }
-        [Required]
-        public  string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
 
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
 
-        public virtual ICollection<Song> Songs { get; set; }
+        public virtual ICollection<Song>? Songs { get; set; }
+
+        public User()
+        {
+            Songs = [];
+        }
 
     }
 }
