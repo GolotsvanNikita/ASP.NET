@@ -47,7 +47,7 @@ namespace MusicPortal.Controllers
                 return RedirectToAction("Login", "Account");
             }
             await _userRepository.DeleteUserAsync(id);
-            return RedirectToAction("RegistrationRequests");
+            return RedirectToAction("Users");
         }
 
         [HttpPost]
@@ -63,7 +63,7 @@ namespace MusicPortal.Controllers
                 user.IsActive = true;
                 await _userRepository.UpdateUserAsync(user);
             }
-            return RedirectToAction("RegistrationRequests");
+            return RedirectToAction("Users");
         }
 
         [HttpPost]
