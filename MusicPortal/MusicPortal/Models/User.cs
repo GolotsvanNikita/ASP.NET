@@ -19,6 +19,5 @@ namespace MusicPortal.Models
         {
             Songs = [];
         }
-
     }
 }
