@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MusicPortal.Models;
-using MusicPortal.Repositories;
-using System.Threading.Tasks;
+using MusicPortal.BLL.DTO;
+using MusicPortal.BLL.Interfaces;
 
 namespace MusicPortal.Controllers
 {
     public class GenresController : Controller
     {
-        private readonly IGenreRepository _genreRepository;
+        private readonly IGenreService _genreService;
 
-        public GenresController(IGenreRepository genreRepository)
+        public GenresController(IGenreService genreService)
         {
-            _genreRepository = genreRepository;
+            _genreService = genreService;
         }
 
         private bool IsAdmin()
@@ -25,7 +24,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var genres = await _genreRepository.GetAllGenresAsync();
+            var genres = await _genreService.GetAllGenres();
             return View(genres);
         }
 
@@ -39,7 +38,7 @@ namespace MusicPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Genre genre)
+        public async Task<IActionResult> Create(GenreDTO genre)
         {
             if (!IsAdmin())
             {
@@ -47,7 +46,7 @@ namespace MusicPortal.Controllers
             }
             if (ModelState.IsValid)
             {
-                await _genreRepository.AddGenreAsync(genre);
+                await _genreService.AddGenre(genre);
                 return RedirectToAction("Index");
             }
             return View(genre);
@@ -59,13 +58,16 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var genre = await _genreRepository.GetGenreByIdAsync(id);
-            if (genre == null) return NotFound();
+            var genre = await _genreService.GetGenreById(id);
+            if (genre == null) 
+            {
+                return NotFound();
+            }
             return View(genre);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Genre genre)
+        public async Task<IActionResult> Edit(GenreDTO genre)
         {
             if (!IsAdmin())
             {
@@ -73,7 +75,7 @@ namespace MusicPortal.Controllers
             }
             if (ModelState.IsValid)
             {
-                await _genreRepository.UpdateGenreAsync(genre);
+                await _genreService.UpdateGenre(genre);
                 return RedirectToAction("Index");
             }
             return View(genre);
@@ -86,7 +88,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            await _genreRepository.DeleteGenreAsync(id);
+            await _genreService.DeleteGenre(id);
             return RedirectToAction("Index");
         }
     }

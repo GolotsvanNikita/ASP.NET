@@ -4,8 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPortal", "MusicPortal\MusicPortal.csproj", "{DAD3CB2D-9585-4276-AED8-E1A20CD9D555}"
+	ProjectSection(ProjectDependencies) = postProject
+		{147E5936-3529-46C6-9C6A-0680F66FB044} = {147E5936-3529-46C6-9C6A-0680F66FB044}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPortal.DAL", "MusicPortal.DAL\MusicPortal.DAL.csproj", "{B6A37DFB-F8B5-4B6E-99F6-1DB204FAEF7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPortal.BLL", "MusicPortal.BLL\MusicPortal.BLL.csproj", "{147E5936-3529-46C6-9C6A-0680F66FB044}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B6A37DFB-F8B5-4B6E-99F6-1DB204FAEF7D} = {B6A37DFB-F8B5-4B6E-99F6-1DB204FAEF7D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,10 @@ Global
 		{B6A37DFB-F8B5-4B6E-99F6-1DB204FAEF7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6A37DFB-F8B5-4B6E-99F6-1DB204FAEF7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6A37DFB-F8B5-4B6E-99F6-1DB204FAEF7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{147E5936-3529-46C6-9C6A-0680F66FB044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{147E5936-3529-46C6-9C6A-0680F66FB044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{147E5936-3529-46C6-9C6A-0680F66FB044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{147E5936-3529-46C6-9C6A-0680F66FB044}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,21 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MusicPortal.Models;
-using MusicPortal.Repositories;
-using System.IO;
-using System.Threading.Tasks;
+using MusicPortal.BLL.DTO;
+using MusicPortal.BLL.Interfaces;
 
 namespace MusicPortal.Controllers
 {
     public class SongsController : Controller
     {
-        private readonly ISongRepository _songRepository;
-        private readonly IGenreRepository _genreRepository;
+        private readonly ISongService _songService;
+        private readonly IGenreService _genreService;
 
-        public SongsController(ISongRepository songRepository, IGenreRepository genreRepository)
+        public SongsController(ISongService songService, IGenreService genreService)
         {
-            _songRepository = songRepository;
-            _genreRepository = genreRepository;
+            _songService = songService;
+            _genreService = genreService;
         }
 
         private bool IsAuthenticated()
@@ -30,7 +28,7 @@ namespace MusicPortal.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var songs = await _songRepository.GetAllSongsAsync();
+            var songs = await _songService.GetAllSongs();
             return View(songs);
         }
 
@@ -40,12 +38,12 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            ViewData["GenreId"] = new SelectList(await _genreRepository.GetAllGenresAsync(), "GenreId", "Name");
+            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name");
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Song song, IFormFile upload)
+        public async Task<IActionResult> Create(SongDTO song, IFormFile upload)
         {
             if (!IsAuthenticated())
             {
@@ -76,7 +74,7 @@ namespace MusicPortal.Controllers
                         song.FilePath = "/Uploads/" + upload.FileName;
                     }
 
-                    await _songRepository.AddSongAsync(song);
+                    await _songService.AddSong(song, upload);
                     return RedirectToAction("Index");
                 }
                 catch (Exception)
@@ -85,7 +83,7 @@ namespace MusicPortal.Controllers
                 }
             }
 
-            ViewData["GenreId"] = new SelectList(await _genreRepository.GetAllGenresAsync(), "GenreId", "Name", song.GenreId);
+            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
             return View(song);
         }
 
@@ -95,17 +93,17 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var song = await _songRepository.GetSongByIdAsync(id);
+            var song = await _songService.GetSongById(id);
             if (song == null)
             {
                 return NotFound();
             }
-            ViewData["GenreId"] = new SelectList(await _genreRepository.GetAllGenresAsync(), "GenreId", "Name", song.GenreId);
+            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
             return View(song);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Song song, IFormFile? upload)
+        public async Task<IActionResult> Edit(SongDTO song, IFormFile? upload)
         {
             if (!IsAdmin())
             {
@@ -124,10 +122,10 @@ namespace MusicPortal.Controllers
                     song.FilePath = "/Uploads/" + upload.FileName;
                 }
 
-                await _songRepository.UpdateSongAsync(song);
+                await _songService.UpdateSong(song, upload);
                 return RedirectToAction("Index");
             }
-            ViewData["GenreId"] = new SelectList(await _genreRepository.GetAllGenresAsync(), "GenreId", "Name", song.GenreId);
+            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
             return View(song);
         }
 
@@ -138,7 +136,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var song = await _songRepository.GetSongByIdAsync(id);
+            var song = await _songService.GetSongById(id);
             if (song != null)
             {
                 if (!string.IsNullOrEmpty(song.FilePath))
@@ -149,7 +147,7 @@ namespace MusicPortal.Controllers
                         System.IO.File.Delete(filePath);
                     }
                 }
-                await _songRepository.DeleteSongAsync(id);
+                await _songService.DeleteSong(id);
             }
             return RedirectToAction("Index");
         }
@@ -160,7 +158,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var song = await _songRepository.GetSongByIdAsync(id);
+            var song = await _songService.GetSongById(id);
             if (song == null || string.IsNullOrEmpty(song.FilePath))
             {
                 return NotFound();

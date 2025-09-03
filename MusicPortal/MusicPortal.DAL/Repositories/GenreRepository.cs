@@ -13,29 +13,29 @@ namespace MusicPortal.DAL.Repositories
             _context = context;
         }
 
-        public async Task<List<Genre>> GetAllGenresAsync()
+        public async Task<List<Genre>> GetAllGenres()
         {
             return await _context.Genres.ToListAsync();
         }
 
-        public async Task<Genre?> GetGenreByIdAsync(int id)
+        public async Task<Genre?> GetGenreById(int id)
         {
             return await _context.Genres.FindAsync(id);
         }
 
-        public async Task AddGenreAsync(Genre genre)
+        public async Task AddGenre(Genre genre)
         {
             _context.Genres.Add(genre);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateGenreAsync(Genre genre)
+        public async Task UpdateGenre(Genre genre)
         {
             _context.Update(genre);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteGenreAsync(int id)
+        public async Task DeleteGenre(int id)
         {
             var genre = await _context.Genres.FindAsync(id);
             if (genre != null)

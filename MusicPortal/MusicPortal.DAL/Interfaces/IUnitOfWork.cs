@@ -3,7 +3,7 @@ using MusicPortal.DAL.Repositories;
 
 namespace MusicPortal.DAL.Interfaces
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
         IUserRepository<User> Users { get; }
         IGenreRepository<Genre> Genres { get; }

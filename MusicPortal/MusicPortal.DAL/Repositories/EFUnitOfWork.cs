@@ -1,58 +1,34 @@
-﻿using MusicPortal.DAL.EF;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicPortal.DAL.EF;
 using MusicPortal.DAL.Entities;
 using MusicPortal.DAL.Interfaces;
 
 namespace MusicPortal.DAL.Repositories
 {
-    internal class EFUnitOfWork : IUnitOfWork
+    public class EFUnitOfWork : IUnitOfWork
     {
         private MusicPortalContext db;
-        private UserRepository userRepository;
-        private GenreRepository genreRepository;
-        private SongRepository songRepository;
+        private UserRepository? userRepository;
+        private GenreRepository? genreRepository;
+        private SongRepository? songRepository;
 
         public EFUnitOfWork(MusicPortalContext context) 
         {
-            this.db = context;
+            db = context;
         }
 
-        public IUserRepository<User> Users 
-        {
-            get 
-            {
-                if (userRepository == null) 
-                {
-                    userRepository = new UserRepository(db);
-                }
-                return userRepository;
-            }
-        }
-        public IGenreRepository<Genre> Genres
-        {
-            get
-            {
-                if (genreRepository == null)
-                {
-                    genreRepository = new GenreRepository(db);
-                }
-                return genreRepository;
-            }
-        }
-        public ISongRepository<Song> Songs
-        {
-            get
-            {
-                if (songRepository == null)
-                {
-                    songRepository = new SongRepository(db);
-                }
-                return songRepository;
-            }
-        }
+        public IGenreRepository<Genre> Genres => genreRepository ??= new GenreRepository(db);
+        public ISongRepository<Song> Songs => songRepository ??= new SongRepository(db);
+        public IUserRepository<User> Users => userRepository ??= new UserRepository(db);
 
-        public async Task Save() 
+        public async Task Save()
         {
             await db.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }
