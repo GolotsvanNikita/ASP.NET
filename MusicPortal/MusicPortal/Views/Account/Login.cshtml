@@ -1,26 +1,25 @@
-﻿@{
+﻿@model MusicPortal.BLL.DTO.LoginDTO
+
+@{
     ViewData["Title"] = "Login";
 }
 
 <div class="container mt-4">
     <h2>Login</h2>
-    <form asp-action="Login">
+    <form asp-action="Login" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label for="login">Login</label>
-            <input name="login" class="form-control" />
+            <label asp-for="Login">Login</label>
+            <input asp-for="Login" class="form-control" />
+            <span asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="form-control" />
+            <label asp-for="Password">Password</label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger mt-3">
-            @ViewData.ModelState[""].Errors[0].ErrorMessage
-        </div>
-    }
 </div>
 
 @section Scripts {

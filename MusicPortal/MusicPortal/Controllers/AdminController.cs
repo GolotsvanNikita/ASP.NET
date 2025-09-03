@@ -1,22 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MusicPortal.Models;
-using MusicPortal.Repositories;
-using System.Threading.Tasks;
+using MusicPortal.BLL.Interfaces;
 
 namespace MusicPortal.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public AdminController(IUserRepository userRepository)
+        public AdminController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         private bool IsAdmin()
         {
-            return HttpContext.Session.GetString("IsAdmin") == "True";
+            var isAdmin = HttpContext.Session.GetString("IsAdmin") == "True";
+            return isAdmin;
         }
 
         public async Task<IActionResult> Users()
@@ -25,7 +24,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var users = await _userRepository.GetAllUsersAsync();
+            var users = await _userService.GetAllUsers();
             return View(users);
         }
 
@@ -35,49 +34,54 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var requests = await _userRepository.GetInactiveUsersAsync();
+            var requests = await _userService.GetInactiveUsers();
             return View(requests);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser(int id)
         {
             if (!IsAdmin())
             {
                 return RedirectToAction("Login", "Account");
             }
-            await _userRepository.DeleteUserAsync(id);
+            var result = await _userService.DeleteUser(id);
+            if (!result)
+            {
+                TempData["Error"] = "Failed to delete user.";
+            }
             return RedirectToAction("Users");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActivateUser(int id)
         {
             if (!IsAdmin())
             {
                 return RedirectToAction("Login", "Account");
             }
-            var user = await _userRepository.GetUserByIdAsync(id);
-            if (user != null)
+            var result = await _userService.ActivateUser(id);
+            if (!result)
             {
-                user.IsActive = true;
-                await _userRepository.UpdateUserAsync(user);
+                TempData["Error"] = "Failed to activate user.";
             }
             return RedirectToAction("Users");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MakeAdmin(int id)
         {
             if (!IsAdmin())
             {
                 return RedirectToAction("Login", "Account");
             }
-            var user = await _userRepository.GetUserByIdAsync(id);
-            if (user != null)
+            var result = await _userService.MakeAdmin(id);
+            if (!result)
             {
-                user.IsAdmin = true;
-                await _userRepository.UpdateUserAsync(user);
+                TempData["Error"] = "Failed to make user admin.";
             }
             return RedirectToAction("Users");
         }

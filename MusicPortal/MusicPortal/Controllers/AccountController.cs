@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MusicPortal.Models;
-using MusicPortal.Repositories;
-using MusicPortal.Services;
-using System.Threading.Tasks;
+using MusicPortal.BLL.DTO;
+using MusicPortal.BLL.Interfaces;
+using MusicPortal.BLL.Services;
 
 namespace MusicPortal.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly IPasswordHasher _passwordHasher;
 
-        public AccountController(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public AccountController(IUserService userService, IPasswordHasher passwordHasher)
         {
-            _userRepository = userRepository;
+            _userService = userService;   
             _passwordHasher = passwordHasher;
         }
 
@@ -25,7 +24,7 @@ namespace MusicPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(User user, string password, string confirmPassword)
+        public async Task<IActionResult> Register(UserDTO user, string password, string confirmPassword)
         {
             if (string.IsNullOrWhiteSpace(password))
             {
@@ -44,22 +43,7 @@ namespace MusicPortal.Controllers
             {
                 try
                 {
-                    bool hasAdmins = await _userRepository.GetAllUsersAsync().ContinueWith(t => t.Result.Any(u => u.IsAdmin));
-
-                    user.PasswordHash = _passwordHasher.HashPassword(password);
-
-                    if (!hasAdmins)
-                    {
-                        user.IsAdmin = true;
-                        user.IsActive = true;
-                    }
-                    else
-                    {
-                        user.IsAdmin = false;
-                        user.IsActive = false;
-                    }
-
-                    await _userRepository.AddUserAsync(user);
+                    await _userService.RegisterUser(user, password);
                     return RedirectToAction("Login");
                 }
                 catch (DbUpdateException ex)
@@ -81,16 +65,14 @@ namespace MusicPortal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string login, string password)
+        public async Task<IActionResult> Login(LoginDTO model)
         {
-            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Login and password are required.");
-                return View();
+                return View(model);
             }
 
-            string hash = _passwordHasher.HashPassword(password);
-            var user = await _userRepository.GetUserByLoginAndPasswordAsync(login, hash);
+            var user = await _userService.AuthenticateUser(model.Login, model.Password);
 
             if (user != null && user.IsActive)
             {
@@ -101,7 +83,7 @@ namespace MusicPortal.Controllers
             }
 
             ModelState.AddModelError("", "Incorrect login or password or account is not active.");
-            return View();
+            return View(model);
         }
 
         public IActionResult Logout()

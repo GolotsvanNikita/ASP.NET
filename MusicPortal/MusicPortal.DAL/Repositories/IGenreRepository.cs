@@ -2,12 +2,12 @@
 
 namespace MusicPortal.DAL.Repositories
 {
-    public interface IGenreRepository<T>
+    public interface IGenreRepository<T> where T : Genre
     {
-        Task<List<Genre>> GetAllGenresAsync();
-        Task<Genre?> GetGenreByIdAsync(int id);
-        Task AddGenreAsync(Genre genre);
-        Task UpdateGenreAsync(Genre genre);
-        Task DeleteGenreAsync(int id);
+        Task<List<Genre>> GetAllGenres();
+        Task<Genre?> GetGenreById(int id);
+        Task AddGenre(Genre genre);
+        Task UpdateGenre(Genre genre);
+        Task DeleteGenre(int id);
     }
 }
