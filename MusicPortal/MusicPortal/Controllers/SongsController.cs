@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MusicPortal.BLL.DTO;
 using MusicPortal.BLL.Interfaces;
+using MusicPortal.Filters;
 
 namespace MusicPortal.Controllers
 {
+    [Culture]
     public class SongsController : Controller
     {
         private readonly ISongService _songService;
@@ -28,6 +30,7 @@ namespace MusicPortal.Controllers
 
         public async Task<IActionResult> Index()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             var songs = await _songService.GetAllSongs();
             return View(songs);
         }
@@ -38,6 +41,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name");
             return View();
         }
@@ -83,6 +87,7 @@ namespace MusicPortal.Controllers
                 }
             }
 
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
             return View(song);
         }
@@ -98,6 +103,7 @@ namespace MusicPortal.Controllers
             {
                 return NotFound();
             }
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
             return View(song);
         }
@@ -125,6 +131,7 @@ namespace MusicPortal.Controllers
                 await _songService.UpdateSong(song, upload);
                 return RedirectToAction("Index");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
             return View(song);
         }
@@ -172,6 +179,21 @@ namespace MusicPortal.Controllers
 
             var fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, "audio/mpeg", Path.GetFileName(filePath));
+        }
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path");
+
+            List<string> cultures = ["en", "uk",];
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }

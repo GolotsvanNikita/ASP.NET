@@ -20,7 +20,10 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <a class="nav-link" asp-controller="Songs" asp-action="Index">Songs</a>
+                        <a class="nav-link" asp-controller="Songs" asp-action="Index">@Resource.SongsText</a>
+                        @{
+                            string currentLang = Context.Request.Cookies["lang"] ?? "en";
+                        }
                         @if (Context.Session.GetString("IsAdmin") == "True")
                         {
                             <a class="nav-link" asp-controller="Admin" asp-action="Users">Users request</a>
@@ -32,9 +35,24 @@
                         }
                         else
                         {
-                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
-                            <a class="nav-link" asp-controller="Account" asp-action="Register">Registration</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">@Resource.LoginText</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Register">@Resource.RegistrationText</a>
                         }
+                        <form method="post" asp-controller="Account" asp-action="ChangeCulture" id="langForm">
+                            <select name="lang" class="form-control" id="langSelect">
+                                @if (currentLang == "en")
+                                {
+                                    <option value="en" selected>English</option>
+                                    <option value="uk">Українська</option>
+                                }
+                                else
+                                {
+                                    <option value="en">English</option>
+                                    <option value="uk" selected>Українська</option>
+                                }
+                            </select>
+                            <input type="submit" name="submitBtn" hidden id="submitBtn">
+                        </form>
                     </ul>
                 </div>
             </div>
@@ -54,6 +72,22 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            var langSelect = document.getElementById('langSelect');
+            var langForm = document.getElementById('langForm');
+
+            if (langSelect && langForm)
+            {
+                langSelect.addEventListener('change', function()
+                {
+                    langForm.submit();
+                });
+            }
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
