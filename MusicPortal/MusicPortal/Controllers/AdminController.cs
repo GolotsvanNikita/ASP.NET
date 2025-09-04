@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MusicPortal.BLL.Interfaces;
+using MusicPortal.Filters;
 
 namespace MusicPortal.Controllers
 {
+    [Culture]
     public class AdminController : Controller
     {
         private readonly IUserService _userService;
@@ -24,6 +26,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             var users = await _userService.GetAllUsers();
             return View(users);
         }
@@ -34,6 +37,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             var requests = await _userService.GetInactiveUsers();
             return View(requests);
         }
@@ -84,6 +88,21 @@ namespace MusicPortal.Controllers
                 TempData["Error"] = "Failed to make user admin.";
             }
             return RedirectToAction("Users");
+        }
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path");
+
+            List<string> cultures = ["en", "uk",];
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }

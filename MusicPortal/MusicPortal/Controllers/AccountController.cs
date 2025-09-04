@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using MusicPortal.BLL.DTO;
 using MusicPortal.BLL.Interfaces;
 using MusicPortal.BLL.Services;
+using MusicPortal.Filters;
 
 namespace MusicPortal.Controllers
 {
+    [Culture]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -19,6 +21,7 @@ namespace MusicPortal.Controllers
 
         public IActionResult Register()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -54,12 +57,13 @@ namespace MusicPortal.Controllers
                     }
                 }
             }
-
+            HttpContext.Session.SetString("path", Request.Path);
             return View(user);
         }
 
         public IActionResult Login()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -69,6 +73,7 @@ namespace MusicPortal.Controllers
         {
             if (!ModelState.IsValid)
             {
+                HttpContext.Session.SetString("path", Request.Path);
                 return View(model);
             }
 
@@ -82,6 +87,7 @@ namespace MusicPortal.Controllers
                 return RedirectToAction("Index", "Songs");
             }
 
+            HttpContext.Session.SetString("path", Request.Path);
             ModelState.AddModelError("", "Incorrect login or password or account is not active.");
             return View(model);
         }
@@ -90,6 +96,21 @@ namespace MusicPortal.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
+        }
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path");
+
+            List<string> cultures = ["en", "uk",];
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }
