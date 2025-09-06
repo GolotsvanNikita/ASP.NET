@@ -26,12 +26,12 @@
                         }
                         @if (Context.Session.GetString("IsAdmin") == "True")
                         {
-                            <a class="nav-link" asp-controller="Admin" asp-action="Users">Users request</a>
-                            <a class="nav-link" asp-controller="Genres" asp-action="Index">Genres</a>
+                            <a class="nav-link" asp-controller="Admin" asp-action="Users">@Resource.UsersRequestText</a>
+                            <a class="nav-link" asp-controller="Genres" asp-action="Index">@Resource.GenresText</a>
                         }
                         @if (Context.Session.GetInt32("UserId") != null)
                         {
-                            <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Logout">@Resource.LogoutText</a>
                         }
                         else
                         {

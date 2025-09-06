@@ -12,14 +12,14 @@
             if (audio.paused)
             {
                 audio.play();
-                playPauseBtn.textContent = 'Pause';
-                playPauseBtn.setAttribute('data-action', 'pause');
+                playPauseBtn.textContent = document.cookie == 'lang=uk' ? 'Пауза' : 'Pause';
+                playPauseBtn.setAttribute('data-action', 'Pause');
             }
             else
             {
                 audio.pause();
-                playPauseBtn.textContent = 'Play';
-                playPauseBtn.setAttribute('data-action', 'play');
+                playPauseBtn.textContent = document.cookie == 'lang=uk' ? 'Увімкнути' : 'Play';
+                playPauseBtn.setAttribute('data-action', 'Play');
             }
         });
 

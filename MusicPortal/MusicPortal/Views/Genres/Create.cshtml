@@ -5,13 +5,13 @@
 }
 
 <div class="container mt-4">
-    <h2>Add genre</h2>
+    <h2>@Resource.AddGenreText</h2>
     <form asp-action="Create" method="post">
         <div class="form-group">
             <label asp-for="Name"></label>
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary">@Resource.AddText</button>
     </form>
 </div>

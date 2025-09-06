@@ -10,7 +10,6 @@ namespace MusicPortal.BLL.DTO
     public class UserDTO
     {
         public int Id { get; set; }
-        [Required]
         public string Login { get; set; }
         public string? PasswordHash { get; set; }
 

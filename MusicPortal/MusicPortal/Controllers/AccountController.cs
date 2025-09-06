@@ -4,6 +4,7 @@ using MusicPortal.BLL.DTO;
 using MusicPortal.BLL.Interfaces;
 using MusicPortal.BLL.Services;
 using MusicPortal.Filters;
+using System.Runtime.CompilerServices;
 
 namespace MusicPortal.Controllers
 {
@@ -31,15 +32,15 @@ namespace MusicPortal.Controllers
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                ModelState.AddModelError("password", "Password is required.");
+                ModelState.AddModelError("password", Resources.Resource.PassRequired);
             }
             else if (password.Length < 6)
             {
-                ModelState.AddModelError("password", "Password must be at least 6 characters long.");
+                ModelState.AddModelError("password", Resources.Resource.PasswordMustBe);
             }
             else if (password != confirmPassword)
             {
-                ModelState.AddModelError("confirmPassword", "Passwords do not match.");
+                ModelState.AddModelError("confirmPassword", Resources.Resource.PassDoNotMatch);
             }
 
             if (ModelState.IsValid)
@@ -88,7 +89,7 @@ namespace MusicPortal.Controllers
             }
 
             HttpContext.Session.SetString("path", Request.Path);
-            ModelState.AddModelError("", "Incorrect login or password or account is not active.");
+            ModelState.AddModelError("", Resources.Resource.IncorrectLOP);
             return View(model);
         }
 
