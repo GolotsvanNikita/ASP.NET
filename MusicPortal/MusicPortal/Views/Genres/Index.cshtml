@@ -5,13 +5,13 @@
 }
 
 <div class="container mt-4">
-    <h2>List of genres</h2>
-    <a asp-action="Create" class="btn btn-primary mb-3">Add genre</a>
+    <h2>@Resource.ListOfGenres</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">@Resource.AddGenreText</a>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Action</th>
+                <th>@Resource.NameText</th>
+                <th>@Resource.ActionsText</th>
             </tr>
         </thead>
         <tbody>
@@ -20,9 +20,9 @@
                 <tr>
                     <td>@genre.Name</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@genre.GenreId" class="btn btn-warning btn-sm">Change</a>
+                        <a asp-action="Edit" asp-route-id="@genre.GenreId" class="btn btn-warning btn-sm">@Resource.ChangeText</a>
                         <form asp-action="Delete" asp-route-id="@genre.GenreId" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete?');">Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(@Resource.DeleteText + "?");">@Resource.DeleteText</button>
                         </form>
                     </td>
                 </tr>

@@ -61,11 +61,263 @@ namespace MusicPortal.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string ActionsText {
+            get {
+                return ResourceManager.GetString("ActionsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string ActiveText {
+            get {
+                return ResourceManager.GetString("ActiveText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string ActiveUserText {
+            get {
+                return ResourceManager.GetString("ActiveUserText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add genre.
+        /// </summary>
+        public static string AddGenreText {
+            get {
+                return ResourceManager.GetString("AddGenreText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new song.
+        /// </summary>
+        public static string AddNewSong {
+            get {
+                return ResourceManager.GetString("AddNewSong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add song.
+        /// </summary>
+        public static string AddSongText {
+            get {
+                return ResourceManager.GetString("AddSongText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string AddText {
+            get {
+                return ResourceManager.GetString("AddText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Admin.
+        /// </summary>
+        public static string AdminText {
+            get {
+                return ResourceManager.GetString("AdminText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        public static string ChangeText {
+            get {
+                return ResourceManager.GetString("ChangeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DeleteText {
+            get {
+                return ResourceManager.GetString("DeleteText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string DonwloadText {
+            get {
+                return ResourceManager.GetString("DonwloadText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genres.
+        /// </summary>
+        public static string GenresText {
+            get {
+                return ResourceManager.GetString("GenresText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genre.
+        /// </summary>
+        public static string GenreText {
+            get {
+                return ResourceManager.GetString("GenreText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect login or password or account is not active..
+        /// </summary>
+        public static string IncorrectLOP {
+            get {
+                return ResourceManager.GetString("IncorrectLOP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of genres.
+        /// </summary>
+        public static string ListOfGenres {
+            get {
+                return ResourceManager.GetString("ListOfGenres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Login field is required..
+        /// </summary>
+        public static string LoginFieldIsReg {
+            get {
+                return ResourceManager.GetString("LoginFieldIsReg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string LoginText {
             get {
                 return ResourceManager.GetString("LoginText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string LogoutText {
+            get {
+                return ResourceManager.GetString("LogoutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make admin.
+        /// </summary>
+        public static string MakeAdminText {
+            get {
+                return ResourceManager.GetString("MakeAdminText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string NameText {
+            get {
+                return ResourceManager.GetString("NameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New file (optional).
+        /// </summary>
+        public static string NewFileOptionalText {
+            get {
+                return ResourceManager.GetString("NewFileOptionalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string NoText {
+            get {
+                return ResourceManager.GetString("NoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwords do not match..
+        /// </summary>
+        public static string PassDoNotMatch {
+            get {
+                return ResourceManager.GetString("PassDoNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is required..
+        /// </summary>
+        public static string PassRequired {
+            get {
+                return ResourceManager.GetString("PassRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password confirm.
+        /// </summary>
+        public static string PasswordConfirmText {
+            get {
+                return ResourceManager.GetString("PasswordConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be at least 6 characters long..
+        /// </summary>
+        public static string PasswordMustBe {
+            get {
+                return ResourceManager.GetString("PasswordMustBe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string PasswordText {
+            get {
+                return ResourceManager.GetString("PasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play.
+        /// </summary>
+        public static string PlayText {
+            get {
+                return ResourceManager.GetString("PlayText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string RegisterText {
+            get {
+                return ResourceManager.GetString("RegisterText", resourceCulture);
             }
         }
         
@@ -79,11 +331,83 @@ namespace MusicPortal.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string SaveText {
+            get {
+                return ResourceManager.GetString("SaveText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Songs.
         /// </summary>
         public static string SongsText {
             get {
                 return ResourceManager.GetString("SongsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string StopText {
+            get {
+                return ResourceManager.GetString("StopText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploaded by.
+        /// </summary>
+        public static string UploadedByText {
+            get {
+                return ResourceManager.GetString("UploadedByText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string UserNameText {
+            get {
+                return ResourceManager.GetString("UserNameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users request.
+        /// </summary>
+        public static string UsersRequestText {
+            get {
+                return ResourceManager.GetString("UsersRequestText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string UsersText {
+            get {
+                return ResourceManager.GetString("UsersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string UserText {
+            get {
+                return ResourceManager.GetString("UserText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string YesText {
+            get {
+                return ResourceManager.GetString("YesText", resourceCulture);
             }
         }
     }
