@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MusicPortal.BLL.DTO;
 using MusicPortal.BLL.Interfaces;
+using MusicPortal.BLL.Services;
 
 namespace MusicPortal.Controllers
 {
@@ -26,10 +28,30 @@ namespace MusicPortal.Controllers
             return HttpContext.Session.GetString("IsAdmin") == "True";
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            int pageSize = 6;
+
             var songs = await _songService.GetAllSongs();
-            return View(songs);
+            var count = songs.Count();
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            int totalPages = (int)Math.Ceiling((double)count / pageSize);
+
+            if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+            var items = songs.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            IndexViewModel viewModel = new IndexViewModel(items, pageViewModel);
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Create()

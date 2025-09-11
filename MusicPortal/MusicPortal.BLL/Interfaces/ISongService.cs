@@ -1,12 +1,14 @@
-﻿using MusicPortal.DAL.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using MusicPortal.BLL.DTO;
+using MusicPortal.DAL.Entities;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace MusicPortal.BLL.Interfaces
 {
     public interface ISongService
     {
-        Task<List<SongDTO>> GetAllSongs();
+        Task<IEnumerable<SongDTO>> GetAllSongs();
         Task<SongDTO?> GetSongById(int id);
         Task<bool> AddSong(SongDTO song, IFormFile? upload);
         Task<bool> UpdateSong(SongDTO song, IFormFile? upload);

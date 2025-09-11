@@ -18,11 +18,10 @@ namespace MusicPortal.BLL.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
-        public async Task<List<SongDTO>> GetAllSongs()
+        public async Task<IEnumerable<SongDTO>> GetAllSongs()
         {
             var songs = await _unitOfWork.Songs.GetAllSongs();
-            return _mapper.Map<List<SongDTO>>(songs);
+            return _mapper.Map<IEnumerable<SongDTO>>(songs);
         }
 
         public async Task<SongDTO?> GetSongById(int id)

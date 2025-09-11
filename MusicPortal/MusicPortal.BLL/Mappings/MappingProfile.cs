@@ -4,7 +4,7 @@ using MusicPortal.DAL.Entities;
 
 namespace MusicPortal.BLL.Mappings
 {
-    internal class MappingProfile : Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
