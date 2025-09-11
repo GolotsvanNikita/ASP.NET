@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-4">
-    <h2>Registration</h2>
+    <h2>@Resource.RegistrationText</h2>
 
     @if (TempData["SuccessMessage"] != null)
     {
@@ -17,21 +17,20 @@
     <form asp-action="Register" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Login">Login</label>
+            <label asp-for="Login">@Resource.UserNameText</label>
             <input asp-for="Login" class="form-control" />
-            <span asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">@Resource.PasswordText</label>
             <input type="password" name="password" class="form-control"/>
             <span class="text-danger" asp-validation-for="PasswordHash"></span>
         </div>
         <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
+            <label for="confirmPassword">@Resource.PasswordConfirmText</label>
             <input type="password" name="confirmPassword" class="form-control"/>
             <span class="text-danger">@Html.ValidationMessage("confirmPassword")</span>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">@Resource.RegisterText</button>
     </form>
 </div>
 

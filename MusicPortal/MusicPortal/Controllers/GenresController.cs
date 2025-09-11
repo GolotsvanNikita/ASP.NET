@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MusicPortal.BLL.DTO;
 using MusicPortal.BLL.Interfaces;
+using MusicPortal.Filters;
 
 namespace MusicPortal.Controllers
 {
+    [Culture]
     public class GenresController : Controller
     {
         private readonly IGenreService _genreService;
@@ -24,6 +26,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             var genres = await _genreService.GetAllGenres();
             return View(genres);
         }
@@ -34,6 +37,7 @@ namespace MusicPortal.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -49,6 +53,7 @@ namespace MusicPortal.Controllers
                 await _genreService.AddGenre(genre);
                 return RedirectToAction("Index");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             return View(genre);
         }
 
@@ -63,6 +68,7 @@ namespace MusicPortal.Controllers
             {
                 return NotFound();
             }
+            HttpContext.Session.SetString("path", Request.Path);
             return View(genre);
         }
 
@@ -78,6 +84,7 @@ namespace MusicPortal.Controllers
                 await _genreService.UpdateGenre(genre);
                 return RedirectToAction("Index");
             }
+            HttpContext.Session.SetString("path", Request.Path);
             return View(genre);
         }
 
@@ -90,6 +97,21 @@ namespace MusicPortal.Controllers
             }
             await _genreService.DeleteGenre(id);
             return RedirectToAction("Index");
+        }
+        public ActionResult ChangeCulture(string lang)
+        {
+            string? returnUrl = HttpContext.Session.GetString("path");
+
+            List<string> cultures = ["en", "uk",];
+            if (!cultures.Contains(lang))
+            {
+                lang = "en";
+            }
+
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(10);
+            Response.Cookies.Append("lang", lang, option);
+            return Redirect(returnUrl);
         }
     }
 }

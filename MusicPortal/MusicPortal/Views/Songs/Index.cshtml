@@ -13,7 +13,7 @@
     @if (Context.Session.GetString("UserId") != null)
     {
         <div class="mb-3">
-            <a asp-action="Create" class="btn btn-primary">Add song</a>
+            <a asp-action="Create" class="btn btn-primary">@Resource.AddSongText</a>
         </div>
     }
 
@@ -26,14 +26,14 @@
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">@item.Name</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Genre: @item.Genre?.Name</h6>
-                            <p class="card-text">Uploaded by: @item.User?.Login</p>
+                            <h6 class="card-subtitle mb-2 text-muted">@Resource.GenreText: @item.Genre?.Name</h6>
+                            <p class="card-text">@Resource.UploadedByText: @item.User?.Login</p>
                             @if (!string.IsNullOrEmpty(item.FilePath))
                             {
                                 <div class="xp-player" data-song-id="@item.Id">
                                     <audio id="audio-@item.Id" src="@item.FilePath"></audio>
                                     <div class="xp-player-controls">
-                                        <button class="xp-btn xp-play-pause" data-action="play">Play</button>
+                                        <button class="xp-btn xp-play-pause" data-action="play">@Resource.PlayText</button>
                                         <div class="xp-seek-bar">
                                             <input type="range" class="xp-seek-slider" min="0" max="100" value="0" />
                                             <span class="xp-time">00:00 / 00:00</span>
@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                             }
-                            <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-success btn-sm">Download</a>
+                            <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-success btn-sm">@Resource.DonwloadText</a>
                         </div>
                     </div>
                 </div>

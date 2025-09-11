@@ -5,20 +5,20 @@
 }
 
 <div class="container mt-4">
-    <h2>Login</h2>
+    <h2>@Resource.LoginText</h2>
     <form asp-action="Login" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Login">Login</label>
+            <label asp-for="Login">@Resource.UserNameText</label>
             <input asp-for="Login" class="form-control" />
             <span asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Password">Password</label>
+            <label asp-for="Password">@Resource.PasswordText</label>
             <input asp-for="Password" type="password" class="form-control" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">@Resource.LoginText</button>
     </form>
 </div>
 
