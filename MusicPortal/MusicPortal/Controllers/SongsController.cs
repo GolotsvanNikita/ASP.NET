@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MusicPortal.BLL.DTO;
 using MusicPortal.BLL.Interfaces;
-using MusicPortal.BLL.Services;
 using MusicPortal.Filters;
+using MusicPortal.Models;
 
 namespace MusicPortal.Controllers
 {
@@ -30,11 +29,17 @@ namespace MusicPortal.Controllers
             return HttpContext.Session.GetString("IsAdmin") == "True";
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, SortState sortOrder = SortState.NameAsc, string? searchString = null)
         {
             int pageSize = 6;
-            
+
             var songs = await _songService.GetAllSongs();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                songs = songs.Where(s => s.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+            }
+
             var count = songs.Count();
 
             if (page < 1)
@@ -51,11 +56,42 @@ namespace MusicPortal.Controllers
 
             var items = songs.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
+            var sortedItems = sortOrder switch
+            {
+                SortState.NameDesc => items.OrderByDescending(s => s.Name),
+                SortState.DurationAsc => items.OrderBy(s => s.Duration ?? 0),
+                SortState.DurationDesc => items.OrderByDescending(s => s.Duration ?? 0),
+                _ => items.OrderBy(s => s.Name),
+            };
+
+            var itemList = sortedItems.ToList();
+
             PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
-            IndexViewModel viewModel = new IndexViewModel(items, pageViewModel);
-            
+            SortViewModel sortViewModel = new SortViewModel(sortOrder);
+            IndexViewModel viewModel = new IndexViewModel(itemList, pageViewModel, sortViewModel, searchString ?? "");
+
             HttpContext.Session.SetString("path", Request.Path);
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveDuration([FromBody] SongDurationUpdateModel model)
+        {
+            if (model == null || model.Id <= 0)
+            {
+                return BadRequest("Invalid data");
+            }
+
+            var song = await _songService.GetSongById(model.Id);
+            if (song == null)
+            {
+                return NotFound();
+            }
+
+            song.Duration = model.Duration;
+            await _songService.UpdateSong(song, null);
+
+            return Ok(new { message = "Duration saved", duration = model.Duration });
         }
 
         public async Task<IActionResult> Create()

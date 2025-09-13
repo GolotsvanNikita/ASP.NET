@@ -1,19 +1,44 @@
-﻿@model MusicPortal.Controllers.IndexViewModel
+﻿@using MusicPortal.Models
+@model MusicPortal.Controllers.IndexViewModel
 @{
     ViewData["Title"] = "Songs";
 }
 
 <div class="container mt-4">
     <div class="xp-window-buttons">
-        <img src="/content/buttons.png" alt="btnxp"></img>
+        <img src="/content/buttons.png" alt="btnxp">
     </div>
-
     <h2 class="mb-4">Music Portal</h2>
 
     @if (Context.Session.GetString("UserId") != null)
     {
         <div class="mb-3">
             <a asp-action="Create" class="btn btn-primary">@Resource.AddSongText</a>
+        </div>
+    }
+
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="searchString">Search by name:</label>
+                <input type="text" id="searchString" name="searchString" value="@Model.SearchString" class="form-control">
+                <input type="hidden" name="sortOrder" value="@Model.SortViewModel.Current">
+            </div>
+            <div class="col-md-4 mt-4">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    @if (Model?.Songs?.Any() == true)
+    {
+        <div>
+            <filtering action="Index" current="@Model.SortViewModel.Current" property="@SortState.NameAsc">
+                Name
+            </filtering>
+            <filtering action="Index" current="@Model.SortViewModel.Current" property="@SortState.DurationAsc">
+                Duration
+            </filtering>
         </div>
     }
 
@@ -28,14 +53,15 @@
                             <h5 class="card-title">@item.Name</h5>
                             <h6 class="card-subtitle mb-2 text-muted">@Resource.GenreText: @item.Genre?.Name</h6>
                             <p class="card-text">@Resource.UploadedByText: @item.User?.Login</p>
+                            <p class="card-text">Duration: @(item.Duration.HasValue? TimeSpan.FromSeconds(item.Duration.Value).ToString("mm\\:ss") : "N/A")</p>
                             @if (!string.IsNullOrEmpty(item.FilePath))
                             {
                                 <div class="xp-player" data-song-id="@item.Id">
-                                    <audio id="audio-@item.Id" src="@item.FilePath"></audio>
+                                    <audio id="audio-@item.Id" src="@item.FilePath" preload="metadata"></audio>
                                     <div class="xp-player-controls">
                                         <button class="xp-btn xp-play-pause" data-action="play">@Resource.PlayText</button>
                                         <div class="xp-seek-bar">
-                                            <input type="range" class="xp-seek-slider" min="0" max="100" value="0" />
+                                            <input type="range" class="xp-seek-slider" min="0" max="100" value="0">
                                             <span class="xp-time">00:00 / 00:00</span>
                                         </div>
                                     </div>
@@ -51,16 +77,28 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item @(Model.PageViewModel.CurrentPage == 1 ? "disabled" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.CurrentPage - 1)" asp-route-pageSize="@Model.PageViewModel.PageSize">Previous</a>
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(Model.PageViewModel.CurrentPage - 1)"
+                       asp-route-sortOrder="@Model.SortViewModel.Current"
+                       asp-route-searchString="@Model.SearchString">Previous</a>
                 </li>
                 @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
                 {
                     <li class="page-item @(i == Model.PageViewModel.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@Model.PageViewModel.PageSize">@i</a>
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@i"
+                           asp-route-sortOrder="@Model.SortViewModel.Current"
+                           asp-route-searchString="@Model.SearchString">@i</a>
                     </li>
                 }
                 <li class="page-item @(Model.PageViewModel.CurrentPage == Model.PageViewModel.TotalPages ? "disabled" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.CurrentPage + 1)" asp-route-pageSize="@Model.PageViewModel.PageSize">Next</a>
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(Model.PageViewModel.CurrentPage + 1)"
+                       asp-route-sortOrder="@Model.SortViewModel.Current"
+                       asp-route-searchString="@Model.SearchString">Next</a>
                 </li>
             </ul>
         </nav>
