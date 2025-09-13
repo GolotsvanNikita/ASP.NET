@@ -13,6 +13,7 @@ namespace MusicPortal.BLL.DTO
         [Required]
         public string? Name { get; set; }
         public string? FilePath { get; set; }
+        public double? Duration { get; set; }
 
         public int UserId { get; set; }
         public UserDTO? User { get; set; }

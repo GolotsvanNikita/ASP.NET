@@ -7,6 +7,33 @@
         const seekSlider = player.querySelector('.xp-seek-slider');
         const timeDisplay = player.querySelector('.xp-time');
 
+        audio.addEventListener('loadedmetadata', () =>
+        {
+            const duration = audio.duration;
+            const songId = audio.id.replace("audio-", "");
+
+            fetch('/Songs/SaveDuration',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify
+                ({
+                    id: songId,
+                    duration: duration
+                })
+            })
+            .then(res =>
+            {
+                if (!res.ok)
+                {
+                    throw new Error("Save err");
+                }
+                return res.json();
+            })
+            .then(data => console.log("Saved", data))
+            .catch(err => console.error("Error", err));
+        });
+
         playPauseBtn.addEventListener('click', () =>
         {
             if (audio.paused)
