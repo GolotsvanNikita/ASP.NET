@@ -68,6 +68,10 @@
                                 </div>
                             }
                             <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-success btn-sm">@Resource.DonwloadText</a>
+                            @if (Context.Session.GetString("UserId") != null)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a>
+                            }
                         </div>
                     </div>
                 </div>

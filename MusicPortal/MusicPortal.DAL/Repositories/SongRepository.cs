@@ -32,7 +32,6 @@ namespace MusicPortal.DAL.Repositories
         public async Task UpdateSong(Song song)
         {
             _context.Update(song);
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteSong(int id)

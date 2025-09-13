@@ -64,6 +64,9 @@ namespace MusicPortal.BLL.Services
             }
             catch
             {
+                Console.WriteLine(songDto.Name);
+                Console.WriteLine(songDto.Id); 
+                Console.WriteLine("Not Saved in database");
                 return false;
             }
         }
