@@ -9,7 +9,18 @@
 
         audio.addEventListener('loadedmetadata', () =>
         {
+            const hasDuration = player.getAttribute('data-has-duration') === 'true';
+            if (hasDuration)
+            {
+                console.log("skip");
+                return;
+            }
             const duration = audio.duration;
+            if (isNaN(duration) || duration <= 0)
+            {
+                console.error("Invalid duration:", duration);
+                return;
+            }
             const songId = audio.id.replace("audio-", "");
 
             fetch('/Songs/SaveDuration',

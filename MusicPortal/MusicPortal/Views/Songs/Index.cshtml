@@ -24,6 +24,16 @@
                 <input type="text" id="searchString" name="searchString" value="@Model.SearchString" class="form-control">
                 <input type="hidden" name="sortOrder" value="@Model.SortViewModel.Current">
             </div>
+            <div class="col-md-4">
+                <label for="genreId">Filter by genre:</label>
+                <select id="genreId" name="genreId" class="form-control">
+                    <option value="">All Genres</option>
+                    @foreach (var genre in ViewBag.Genres)
+                    {
+                        <option value="@genre.Value" selected="@(genre.Value == Model.GenreId?.ToString() ? "selected" : null)">@genre.Text</option>
+                    }
+                </select>
+            </div>
             <div class="col-md-4 mt-4">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
@@ -56,7 +66,7 @@
                             <p class="card-text">Duration: @(item.Duration.HasValue? TimeSpan.FromSeconds(item.Duration.Value).ToString("mm\\:ss") : "N/A")</p>
                             @if (!string.IsNullOrEmpty(item.FilePath))
                             {
-                                <div class="xp-player" data-song-id="@item.Id">
+                                <div class="xp-player" data-song-id="@item.Id" data-has-duration="@(item.Duration.HasValue ? "true" : "false")">
                                     <audio id="audio-@item.Id" src="@item.FilePath" preload="metadata"></audio>
                                     <div class="xp-player-controls">
                                         <button class="xp-btn xp-play-pause" data-action="play">@Resource.PlayText</button>
@@ -70,7 +80,7 @@
                             <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-success btn-sm">@Resource.DonwloadText</a>
                             @if (Context.Session.GetString("UserId") != null)
                             {
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edit</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
                             }
                         </div>
                     </div>

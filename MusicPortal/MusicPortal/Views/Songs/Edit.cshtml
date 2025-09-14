@@ -8,6 +8,7 @@
     <h2>@Resource.ChangeText</h2>
     <form asp-action="Edit" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="UserId" /> 
         <div class="form-group">
             <label asp-for="Name">@Resource.NameText</label>
             <input asp-for="Name" class="form-control" />
