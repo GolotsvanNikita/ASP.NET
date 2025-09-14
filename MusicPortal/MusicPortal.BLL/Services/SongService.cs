@@ -4,6 +4,7 @@ using MusicPortal.BLL.DTO;
 using MusicPortal.BLL.Interfaces;
 using MusicPortal.DAL.Interfaces;
 using MusicPortal.DAL.Entities;
+using NAudio.Wave;
 using System.IO;
 
 namespace MusicPortal.BLL.Services
@@ -38,13 +39,15 @@ namespace MusicPortal.BLL.Services
                 if (upload != null && upload.Length > 0)
                 {
                     song.FilePath = await SaveFile(upload);
+                    song.Duration = GetAudioDuration(song.FilePath);
                 }
                 await _unitOfWork.Songs.AddSong(song);
                 await _unitOfWork.Save();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error adding song: {ex.Message}");
                 return false;
             }
         }
@@ -53,20 +56,35 @@ namespace MusicPortal.BLL.Services
         {
             try
             {
-                var song = _mapper.Map<Song>(songDto);
+                var existingSong = await _unitOfWork.Songs.GetSongById(songDto.Id);
+                if (existingSong == null)
+                {
+                    return false;
+                }
+
+                existingSong.Name = songDto.Name;
+                existingSong.GenreId = songDto.GenreId;
+                existingSong.UserId = songDto.UserId;
+
                 if (upload != null && upload.Length > 0)
                 {
-                    song.FilePath = await SaveFile(upload);
+                    if (!string.IsNullOrEmpty(existingSong.FilePath))
+                    {
+                        DeleteFile(existingSong.FilePath);
+                    }
+                    existingSong.FilePath = await SaveFile(upload);
+                    existingSong.Duration = GetAudioDuration(existingSong.FilePath);
                 }
-                await _unitOfWork.Songs.UpdateSong(song);
+
+                await _unitOfWork.Songs.UpdateSong(existingSong);
                 await _unitOfWork.Save();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine(songDto.Name);
-                Console.WriteLine(songDto.Id); 
-                Console.WriteLine("Not Saved in database");
+                Console.WriteLine($"Error updating song: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                Console.WriteLine($"Name: {songDto.Name}, Id: {songDto.Id}");
                 return false;
             }
         }
@@ -135,6 +153,23 @@ namespace MusicPortal.BLL.Services
             }
 
             return "/Uploads/" + upload.FileName;
+        }
+
+        private double? GetAudioDuration(string filePath)
+        {
+            try
+            {
+                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + filePath);
+                using (var reader = new Mp3FileReader(fullPath))
+                {
+                    return reader.TotalTime.TotalSeconds;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting duration: {ex.Message}");
+                return null;
+            }
         }
 
         private void DeleteFile(string filePath)

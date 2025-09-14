@@ -29,7 +29,7 @@ namespace MusicPortal.Controllers
             return HttpContext.Session.GetString("IsAdmin") == "True";
         }
 
-        public async Task<IActionResult> Index(int page = 1, SortState sortOrder = SortState.NameAsc, string? searchString = null)
+        public async Task<IActionResult> Index(int page = 1, SortState sortOrder = SortState.NameAsc, string? searchString = null, int? genreId = null)
         {
             int pageSize = 6;
 
@@ -38,6 +38,11 @@ namespace MusicPortal.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 songs = songs.Where(s => s.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (genreId.HasValue)
+            {
+                songs = songs.Where(s => s.GenreId == genreId.Value);
             }
 
             var count = songs.Count();
@@ -68,7 +73,9 @@ namespace MusicPortal.Controllers
 
             PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
             SortViewModel sortViewModel = new SortViewModel(sortOrder);
-            IndexViewModel viewModel = new IndexViewModel(itemList, pageViewModel, sortViewModel, searchString ?? "");
+            IndexViewModel viewModel = new IndexViewModel(itemList, pageViewModel, sortViewModel, searchString ?? "", genreId);
+
+            ViewData["Genres"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", genreId);
 
             HttpContext.Session.SetString("path", Request.Path);
             return View(viewModel);
@@ -77,7 +84,7 @@ namespace MusicPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveDuration([FromBody] SongDurationUpdateModel model)
         {
-            if (model == null || model.Id <= 0)
+            if (model == null || model.Id <= 0 || model.Duration <= 0 || double.IsNaN(model.Duration))
             {
                 return BadRequest("Invalid data");
             }
@@ -89,7 +96,12 @@ namespace MusicPortal.Controllers
             }
 
             song.Duration = model.Duration;
-            await _songService.UpdateSong(song, null);
+
+            var updated = await _songService.UpdateSong(song, null);
+            if (!updated)
+            {
+                return StatusCode(500, new { message = "Error saving duration" });
+            }
 
             return Ok(new { message = "Duration saved", duration = model.Duration });
         }
@@ -106,39 +118,28 @@ namespace MusicPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SongDTO song, IFormFile upload)
+        public async Task<IActionResult> Create(SongDTO songDto, IFormFile upload)
         {
             if (!IsAuthenticated())
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            song.UserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            songDto.UserId = HttpContext.Session.GetInt32("UserId") ?? 0;
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (upload != null && upload.Length > 0)
+                    var added = await _songService.AddSong(songDto, upload);
+                    if (added)
                     {
-                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Uploads");
-                        if (!Directory.Exists(uploadsFolder))
-                        {
-                            Directory.CreateDirectory(uploadsFolder);
-                        }
-
-                        var filePath = Path.Combine(uploadsFolder, upload.FileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await upload.CopyToAsync(stream);
-                        }
-
-                        song.FilePath = "/Uploads/" + upload.FileName;
+                        return RedirectToAction("Index");
                     }
-
-                    await _songService.AddSong(song, upload);
-                    return RedirectToAction("Index");
+                    else
+                    {
+                        ModelState.AddModelError("", "Unexpected error while saving the song.");
+                    }
                 }
                 catch (Exception)
                 {
@@ -147,8 +148,8 @@ namespace MusicPortal.Controllers
             }
 
             HttpContext.Session.SetString("path", Request.Path);
-            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
-            return View(song);
+            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", songDto.GenreId);
+            return View(songDto);
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -168,31 +169,30 @@ namespace MusicPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(SongDTO song, IFormFile? upload)
+        [HttpPost]
+        public async Task<IActionResult> Edit(SongDTO songDto, IFormFile? upload)
         {
             if (!IsAdmin())
             {
                 return RedirectToAction("Login", "Account");
             }
-            if (ModelState.IsValid)
-            {
-                if (upload != null && upload.Length > 0)
-                {
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Uploads");
-                    var filePath = Path.Combine(uploadsFolder, upload.FileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await upload.CopyToAsync(stream);
-                    }
-                    song.FilePath = "/Uploads/" + upload.FileName;
-                }
 
-                await _songService.UpdateSong(song, upload);
+            if (!ModelState.IsValid)
+            {
+                HttpContext.Session.SetString("path", Request.Path);
+                ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", songDto.GenreId);
+                return View(songDto);
+            }
+            var updated = await _songService.UpdateSong(songDto, upload);
+            if (updated)
+            {
                 return RedirectToAction("Index");
             }
+
+            ModelState.AddModelError("", "Error updating song. Please try again.");
             HttpContext.Session.SetString("path", Request.Path);
-            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", song.GenreId);
-            return View(song);
+            ViewData["GenreId"] = new SelectList(await _genreService.GetAllGenres(), "GenreId", "Name", songDto.GenreId);
+            return View(songDto);
         }
 
         [HttpPost]
