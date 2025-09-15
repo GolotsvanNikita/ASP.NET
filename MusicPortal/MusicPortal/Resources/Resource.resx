@@ -141,6 +141,9 @@
   <data name="AdminText" xml:space="preserve">
     <value>Admin</value>
   </data>
+  <data name="AllGenresText" xml:space="preserve">
+    <value>All Genres</value>
+  </data>
   <data name="ChangeText" xml:space="preserve">
     <value>Change</value>
   </data>
@@ -149,6 +152,12 @@
   </data>
   <data name="DonwloadText" xml:space="preserve">
     <value>Download</value>
+  </data>
+  <data name="DurationText" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="FilterByGenre" xml:space="preserve">
+    <value>Filter by genre:</value>
   </data>
   <data name="GenresText" xml:space="preserve">
     <value>Genres</value>
@@ -180,6 +189,9 @@
   <data name="NewFileOptionalText" xml:space="preserve">
     <value>New file (optional)</value>
   </data>
+  <data name="NextText" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="NoText" xml:space="preserve">
     <value>No</value>
   </data>
@@ -201,6 +213,9 @@
   <data name="PlayText" xml:space="preserve">
     <value>Play</value>
   </data>
+  <data name="PreviousText" xml:space="preserve">
+    <value>Previous</value>
+  </data>
   <data name="RegisterText" xml:space="preserve">
     <value>Register</value>
   </data>
@@ -209,6 +224,12 @@
   </data>
   <data name="SaveText" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SearchByName" xml:space="preserve">
+    <value>Search by name:</value>
+  </data>
+  <data name="SearchText" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="SongsText" xml:space="preserve">
     <value>Songs</value>
