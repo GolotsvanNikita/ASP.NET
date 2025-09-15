@@ -133,6 +133,15 @@ namespace MusicPortal.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на All Genres.
+        /// </summary>
+        public static string AllGenresText {
+            get {
+                return ResourceManager.GetString("AllGenresText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Change.
         /// </summary>
         public static string ChangeText {
@@ -156,6 +165,24 @@ namespace MusicPortal.Resources {
         public static string DonwloadText {
             get {
                 return ResourceManager.GetString("DonwloadText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duration.
+        /// </summary>
+        public static string DurationText {
+            get {
+                return ResourceManager.GetString("DurationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filter by genre:.
+        /// </summary>
+        public static string FilterByGenre {
+            get {
+                return ResourceManager.GetString("FilterByGenre", resourceCulture);
             }
         }
         
@@ -250,6 +277,15 @@ namespace MusicPortal.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Next.
+        /// </summary>
+        public static string NextText {
+            get {
+                return ResourceManager.GetString("NextText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на No.
         /// </summary>
         public static string NoText {
@@ -313,6 +349,15 @@ namespace MusicPortal.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Previous.
+        /// </summary>
+        public static string PreviousText {
+            get {
+                return ResourceManager.GetString("PreviousText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Register.
         /// </summary>
         public static string RegisterText {
@@ -336,6 +381,24 @@ namespace MusicPortal.Resources {
         public static string SaveText {
             get {
                 return ResourceManager.GetString("SaveText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Search by name:.
+        /// </summary>
+        public static string SearchByName {
+            get {
+                return ResourceManager.GetString("SearchByName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Search.
+        /// </summary>
+        public static string SearchText {
+            get {
+                return ResourceManager.GetString("SearchText", resourceCulture);
             }
         }
         

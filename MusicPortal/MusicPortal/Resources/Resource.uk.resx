@@ -141,6 +141,9 @@
   <data name="AdminText" xml:space="preserve">
     <value>Адмін</value>
   </data>
+  <data name="AllGenresText" xml:space="preserve">
+    <value>Усі Жанри</value>
+  </data>
   <data name="ChangeText" xml:space="preserve">
     <value>Змінити</value>
   </data>
@@ -149,6 +152,12 @@
   </data>
   <data name="DonwloadText" xml:space="preserve">
     <value>Завантажити</value>
+  </data>
+  <data name="DurationText" xml:space="preserve">
+    <value>Тривалiсть</value>
+  </data>
+  <data name="FilterByGenre" xml:space="preserve">
+    <value>Фiльтрацiя за жанром:</value>
   </data>
   <data name="GenresText" xml:space="preserve">
     <value>Жанри</value>
@@ -180,6 +189,9 @@
   <data name="NewFileOptionalText" xml:space="preserve">
     <value>Новий файл (необов'язково)</value>
   </data>
+  <data name="NextText" xml:space="preserve">
+    <value>Наступний</value>
+  </data>
   <data name="NoText" xml:space="preserve">
     <value>Ні</value>
   </data>
@@ -201,6 +213,9 @@
   <data name="PlayText" xml:space="preserve">
     <value>Увімкнути</value>
   </data>
+  <data name="PreviousText" xml:space="preserve">
+    <value>Попереднiй</value>
+  </data>
   <data name="RegisterText" xml:space="preserve">
     <value>Зареєструватися</value>
   </data>
@@ -209,6 +224,12 @@
   </data>
   <data name="SaveText" xml:space="preserve">
     <value>Зберегти</value>
+  </data>
+  <data name="SearchByName" xml:space="preserve">
+    <value>Шукати за назвою:</value>
+  </data>
+  <data name="SearchText" xml:space="preserve">
+    <value>Шукати</value>
   </data>
   <data name="SongsText" xml:space="preserve">
     <value>Пісні</value>
