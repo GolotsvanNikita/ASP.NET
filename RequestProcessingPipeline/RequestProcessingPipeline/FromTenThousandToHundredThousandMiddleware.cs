@@ -84,7 +84,7 @@
                     context.Session.Remove("remainder_number");
                 }
             }
-            catch
+            catch (Exception)
             {
                 await context.Response.WriteAsync("Incorrect parameter");
             }

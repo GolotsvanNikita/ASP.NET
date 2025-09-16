@@ -91,7 +91,7 @@
                     context.Session.SetString("remainder_text", hundredText);
                 }
             }
-            catch
+            catch (Exception)
             {
                 await context.Response.WriteAsync("Incorrect parameter");
             }

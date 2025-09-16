@@ -67,7 +67,7 @@
                     await context.Response.WriteAsync("Your number is " + thousandText);
                 }
             }
-            catch
+            catch (Exception)
             {
                 await context.Response.WriteAsync("Incorrect parameter");
             }

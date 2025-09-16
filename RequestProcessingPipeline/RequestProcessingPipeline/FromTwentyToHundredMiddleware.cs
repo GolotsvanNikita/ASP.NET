@@ -72,7 +72,7 @@
                     context.Session.SetString("remainder_text", tensText);
                 }
             }
-            catch
+            catch (Exception)
             {
                 await context.Response.WriteAsync("Incorrect parameter");
             }

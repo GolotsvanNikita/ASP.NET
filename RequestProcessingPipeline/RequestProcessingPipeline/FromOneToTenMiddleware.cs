@@ -56,7 +56,7 @@
                     context.Session.SetString("remainder_text", text);
                 }
             }
-            catch
+            catch (Exception)
             {
                 await context.Response.WriteAsync("Incorrect parameter");
             }
