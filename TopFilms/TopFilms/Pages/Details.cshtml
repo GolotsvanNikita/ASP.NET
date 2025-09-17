@@ -1,4 +1,28 @@
 ﻿@page
 @model TopFilms.Pages.DetailsModel
 @{
+    ViewData["Title"] = "Film Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.Film.Name</h1>
+<div class="card">
+    <div class="poster">
+        <img src="@Url.Content(string.IsNullOrEmpty(Model.Film.PosterPath) ? "~/images/default.png" : $"~/{Model.Film.PosterPath}")" alt="@Model.Film.Name" />
+    </div>
+    <div class="info">
+        <h3>@Model.Film.Name (@Model.Film.Year)</h3>
+        <p><strong>Director:</strong> @Model.Film.Director</p>
+        <p><strong>Genre:</strong> @Model.Film.Genre</p>
+        <p><strong>Description:</strong> @Model.Film.Description</p>
+    </div>
+    <div class="btn-block">
+        <a asp-page="/Edit" asp-route-id="@Model.Film.Id" class="custom-button primary-button">Edit</a>
+        <a asp-page="/Index" class="custom-button">Back to List</a>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 }
