@@ -1,0 +1,36 @@
+﻿@page
+@model IndexModel
+@{
+    ViewBag.Title = "Guest book";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>@Resource.NameOfBook</h1>
+
+@if (this.HttpContext.Session.GetString("Name") != null)
+{
+    <form asp-action="AddMessage" method="post">
+        <div class="form-group">
+            <textarea name="message" rows="4" cols="50" placeholder="@Resource.PlaceHoldText"></textarea>
+        </div>
+        <input type="submit" value="@Resource.BtnAdd" class="btn btn-primary" />
+    </form>
+}
+
+@foreach (var msg in Model.Message)
+{
+    <table class="table table-bordered">
+        <tr>
+            <td>@Resource.UserT</td>
+            <td>@msg.User.Name</td>
+        </tr>
+        <tr>
+            <td>@Resource.MessageT</td>
+            <td>@msg.MessageText</td>
+        </tr>
+        <tr>
+            <td>@Resource.DateT</td>
+            <td>@msg.Date.ToString("dd.MM.yyyy HH:mm:ss")</td>
+        </tr>
+    </table>
+}

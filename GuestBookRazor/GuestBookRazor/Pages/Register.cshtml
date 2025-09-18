@@ -1,0 +1,40 @@
+﻿@page
+@model GuestBookRazor.Pages.RegisterModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>@Resource.RegisterText</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="User.Name" class="control-label">@Resource.NameOfUser</label>
+                <input asp-for="User.Name" class="form-control" />
+                <span asp-validation-for="User.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Password" class="control-label">@Resource.PassText</label>
+                <input asp-for="User.Password" class="form-control" />
+                <span asp-validation-for="User.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.PasswordConfirm" class="control-label">@Resource.PassConf</label>
+                <input asp-for="User.PasswordConfirm" class="form-control" />
+                <span asp-validation-for="User.PasswordConfirm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Resource.RegAction" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
