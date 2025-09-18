@@ -7,11 +7,11 @@
 
 <h1 class="display-4">Top Films</h1>
 <div class="container">
-    @foreach (var film in ViewBag.Films)
+    @foreach (var film in Model.Films)
     {
         <div class="card">
             <div class="poster">
-                <a asp-action="Details" asp-controller="Film" asp-route-id="@film.Id">
+                <a asp-page="/Details" asp-route-id="@film.Id">
                     <img src="@Url.Content(string.IsNullOrEmpty(film.PosterPath) ? "~/images/default.png" : $"~/{film.PosterPath}")" alt="@film.Name" />
                 </a>
             </div>
@@ -22,8 +22,8 @@
                 <p><strong>Description:</strong> @film.Description</p>
             </div>
             <div class="btn-block">
-                <a asp-action="Edit" asp-controller="Film" asp-route-id="@film.Id" class="custom-button primary-button">Update</a>
-                <form asp-action="Delete" asp-controller="Film" method="post" style="display: inline;">
+                <a asp-page="/Edit" asp-route-id="@film.Id" class="custom-button primary-button">Update</a>
+                <form asp-page-handler="Delete" method="post">
                     <input type="hidden" name="id" value="@film.Id" />
                     <button type="submit" id="deleteButton">Delete</button>
                 </form>
@@ -32,34 +32,34 @@
     }
 </div>
 
-@* <h2>Add New Film</h2>
+<h2>Add New Film</h2>
 <div class="form-container">
-    <form asp-action="Create" asp-controller="Film" method="post" enctype="multipart/form-data">
+    <form asp-page-handler="Create" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="error-message"></div>
         <div class="form-group">
-            <label asp-for="Name">Film Name</label>
-            <input asp-for="Name" class="form-input" placeholder="Enter film name" />
-            <span asp-validation-for="Name" class="error-message"></span>
+            <label asp-for="NewFilm.Name">Film Name</label>
+            <input asp-for="NewFilm.Name" class="form-input" placeholder="Enter film name" />
+            <span asp-validation-for="NewFilm.Name" class="error-message"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Year">Release Year</label>
-            <input asp-for="Year" class="form-input" placeholder="Enter release year" />
-            <span asp-validation-for="Year" class="error-message"></span>
+            <label asp-for="NewFilm.Year">Release Year</label>
+            <input asp-for="NewFilm.Year" class="form-input" placeholder="Enter release year" />
+            <span asp-validation-for="NewFilm.Year" class="error-message"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Director">Director</label>
-            <input asp-for="Director" class="form-input" placeholder="Enter director name" />
-            <span asp-validation-for="Director" class="error-message"></span>
+            <label asp-for="NewFilm.Director">Director</label>
+            <input asp-for="NewFilm.Director" class="form-input" placeholder="Enter director name" />
+            <span asp-validation-for="NewFilm.Director" class="error-message"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Genre">Genre</label>
-            <input asp-for="Genre" class="form-input" placeholder="Enter genre" />
-            <span asp-validation-for="Genre" class="error-message"></span>
+            <label asp-for="NewFilm.Genre">Genre</label>
+            <input asp-for="NewFilm.Genre" class="form-input" placeholder="Enter genre" />
+            <span asp-validation-for="NewFilm.Genre" class="error-message"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Description">Description</label>
-            <textarea asp-for="Description" class="form-textarea" placeholder="Enter film description"></textarea>
-            <span asp-validation-for="Description" class="error-message"></span>
+            <label asp-for="NewFilm.Description">Description</label>
+            <textarea asp-for="NewFilm.Description" class="form-textarea" placeholder="Enter film description"></textarea>
+            <span asp-validation-for="NewFilm.Description" class="error-message"></span>
         </div>
         <div class="form-group">
             <label for="uploaded">Add poster</label>
@@ -69,7 +69,7 @@
             <button type="submit" class="custom-button primary-button">Add</button>
         </div>
     </form>
-</div> *@
+</div>
 
 @section Scripts
 {
