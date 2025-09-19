@@ -19,6 +19,7 @@ namespace GuestBookRazor.Pages
 
         public void OnGet()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             Message = repo.GetMessages();
         }
 

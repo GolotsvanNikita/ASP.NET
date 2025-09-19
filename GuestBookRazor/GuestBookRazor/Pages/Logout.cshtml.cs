@@ -5,10 +5,10 @@ namespace GuestBookRazor.Pages
 {
     public class LogoutModel : PageModel
     {
-        public IActionResult Logout()
+        public IActionResult OnGet()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index");
+            return RedirectToPage("Index");
         }
     }
 }

@@ -14,9 +14,35 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <a class="navbar-brand" href="Index">@Resource.HomePageText</a>
             @{
-                string currentLang = Context.Request.Cookies["lang"] ?? "en";
+                string? cookieValue = Context.Request.Cookies["lang"];
+                string currentLang = "en";
+
+                if (!string.IsNullOrEmpty(cookieValue))
+                {
+                    var parts = cookieValue.Split('|');
+                    if (parts.Length >= 2)
+                    {
+                        var culturePart = parts[0].Split('=');
+                        if (culturePart.Length == 2)
+                        {
+                            currentLang = culturePart[1];
+                        }
+                    }
+                }
             }
-            <form method="post" asp-controller="Account" asp-action="ChangeCulture" id="langForm">
+            <div class="navbar-nav">
+             @if (Context.Session.GetString("Name") == null)
+             {
+                    <a class="nav-link text-dark" href="Register">@Resource.RegisterText</a>
+                    <a class="nav-link text-dark" href="Login">@Resource.LoginText</a>
+             }
+             else
+             {
+                <span class="span-hello">@Resource.HelloText, @Context.Session.GetString("Name")</span>
+                <a class="nav-link text-dark" href="Logout">@Resource.LogoutText</a>
+             }
+            </div>
+            <form method="post" asp-page="/ChangeCulture" id="langForm">
                 <select name="lang" class="form-control" id="langSelect">
                     @if (currentLang == "en")
                     {
@@ -31,20 +57,6 @@
                 </select>
                 <input type="submit" name="submitBtn" value="@Resource.ChangeLang" hidden id="submitBtn">
             </form>
-            <div class="navbar-nav">
-                @if (Context.Session.GetString("Name") == null)
-                {
-                    <a class="nav-link" href="Register">@Resource.RegisterText</a>
-                }
-                @if (Context.Session.GetString("Name") != null)
-                {
-                    <span class="nav-link">@Resource.HelloText, @Context.Session.GetString("Name")</span>
-                    <a class="nav-link" href="Logout">@Resource.LogoutText</a>
-                }
-                else
-                {
-                    <a class="nav-link" href="Login">@Resource.LoginText</a>
-                }
         </nav>
     </header>
     <div class="container">
@@ -62,6 +74,21 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            var langSelect = document.getElementById('langSelect');
+            var langForm = document.getElementById('langForm');
+
+            if (langSelect && langForm)
+            {
+                langSelect.addEventListener('change', function()
+                {
+                    langForm.submit();
+                });
+            }
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
