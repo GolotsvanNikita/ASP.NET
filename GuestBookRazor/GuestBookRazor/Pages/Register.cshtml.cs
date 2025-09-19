@@ -16,10 +16,10 @@ namespace GuestBookRazor.Pages
             _repository = repository;
             _hasher = hasher;
         }
-        public IActionResult Register()
+
+        public void OnGet()
         {
             HttpContext.Session.SetString("path", Request.Path);
-            return Page();
         }
 
         [BindProperty]
@@ -28,20 +28,21 @@ namespace GuestBookRazor.Pages
         [ValidateAntiForgeryToken]
         public IActionResult OnPost()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                User user = new User
-                {
-                    Name = User.Name,
-                    Password = _hasher.Hash(User.Password)
-                };
-
-                _repository.SaveChanges();
-                _repository.AddUser(user);
-                RedirectToAction("Login");
+                HttpContext.Session.SetString("path", Request.Path);
+                return Page();
             }
-            HttpContext.Session.SetString("path", Request.Path);
-            return Page();
+
+            var user = new User
+            {
+                Name = User.Name,
+                Password = _hasher.Hash(User.Password)
+            };
+
+            _repository.AddUser(user);
+            _repository.SaveChanges();
+            return RedirectToPage("/Login");
         }
     }
 }

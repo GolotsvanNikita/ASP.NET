@@ -8,7 +8,6 @@ namespace GuestBookRazor.Pages
 {
     public class LoginModel : PageModel
     {
-
         private IRepository _repository;
         private IPasswordHash _hasher;
 
@@ -18,10 +17,9 @@ namespace GuestBookRazor.Pages
             _hasher = hasher;
         }
 
-        public IActionResult Login()
+        public void OnGet()
         {
             HttpContext.Session.SetString("path", Request.Path);
-            return Page();
         }
 
         [BindProperty]
@@ -37,10 +35,13 @@ namespace GuestBookRazor.Pages
                 {
                     ModelState.AddModelError("", Resources.Resource.WrongPassOrLog);
                     HttpContext.Session.SetString("path", Request.Path);
+                    return Page();
                 }
+
                 HttpContext.Session.SetString("Name", user.Name);
-                return RedirectToAction("Index");
+                return RedirectToPage("/Index");
             }
+
             HttpContext.Session.SetString("path", Request.Path);
             return Page();
         }
