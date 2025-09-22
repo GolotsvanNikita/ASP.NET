@@ -5,33 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">@Resource.HomePageText</a>
                 @{
                     string currentLang = Context.Request.Cookies["lang"] ?? "en";
                 }
-                <form method="post" asp-controller="Account" asp-action="ChangeCulture" id="langForm">
-                    <select name="lang" class="form-control" id="langSelect">
-                        @if (currentLang == "en")
-                        {
-                            <option value="en" selected>English</option>
-                            <option value="uk">Українська</option>
-                        }
-                        else
-                        {
-                            <option value="en">English</option>
-                            <option value="uk" selected>Українська</option>
-                        }
-                    </select>
-                    <input type="submit" name="submitBtn" value="@Resource.ChangeLang" hidden id="submitBtn">
-                </form>
                 <div class="navbar-nav">
-                    @if(Context.Session.GetString("Name") == null)
+                    <select class="form-select lang-change" style="width: auto; max-width: 150px;">
+                        <option value="en" selected="@(currentLang == "en")">English</option>
+                        <option value="uk" selected="@(currentLang == "uk")">Українська</option>
+                    </select>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    @if (Context.Session.GetString("Name") == null)
                     {
                         <a class="nav-link" asp-controller="Account" asp-action="Register">@Resource.RegisterText</a>
                     }
@@ -50,12 +41,14 @@
     </header>
 
     <div class="container">
-        @RenderBody()
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            © @DateTime.Now.Year - AspNetCore
+            &copy; @DateTime.Now.Year - AspNetCore
         </div>
     </footer>
 
@@ -63,21 +56,33 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function()
+        $(document).ready(function ()
         {
-            var langSelect = document.getElementById('langSelect');
-            var langForm = document.getElementById('langForm');
-
-            if (langSelect && langForm)
+            $('.lang-change').on('change', function ()
             {
-                langSelect.addEventListener('change', function()
+                var culture = $(this).val();
+                if (!culture)
                 {
-                    langForm.submit();
+                    return;
+                }
+
+                $.ajax
+                ({
+                    url: '/Language/Change',
+                    type: 'GET',
+                    data: { culture: culture },
+                    dataType: 'json',
+                    success: function (data)
+                    {
+                        if (data.success)
+                        {
+                            location.reload();
+                        }
+                    }
                 });
-            }
+            });
         });
     </script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

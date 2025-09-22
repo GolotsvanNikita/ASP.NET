@@ -1,0 +1,16 @@
+﻿@model GuestBook.Models.Message
+
+<table class="table table-bordered">
+    <tr>
+        <td>@Resource.UserT</td>
+        <td>@Model.User.Name</td>
+    </tr>
+    <tr>
+        <td>@Resource.MessageT</td>
+        <td>@Model.MessageText</td>
+    </tr>
+    <tr>
+        <td>@Resource.DateT</td>
+        <td>@Model.Date.ToString("dd.MM.yyyy HH:mm:ss")</td>
+    </tr>
+</table>
