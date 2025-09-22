@@ -8,7 +8,7 @@ namespace GuestBook.Controllers
     [Culture]
     public class HomeController : Controller
     {
-        private IRepository _repository;
+        private readonly IRepository _repository;
 
         public HomeController(IRepository repository)
         {
@@ -23,9 +23,9 @@ namespace GuestBook.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMessage(string message)
+        public IActionResult AddMessage([FromBody] MessageInputModel input)
         {
-            if (string.IsNullOrEmpty(message))
+            if (string.IsNullOrEmpty(input?.Message))
             {
                 return RedirectToAction("Index");
             }
@@ -39,18 +39,25 @@ namespace GuestBook.Controllers
             var user = _repository.GetUserByName(name);
             if (user == null)
             {
+    
                 return RedirectToAction("Login", "Account");
             }
 
             var msg = new Message
             {
                 UserId = user.Id,
-                MessageText = message,
-                Date = DateTime.Now
+                MessageText = input.Message,
+                Date = DateTime.Now,
+                User = user
             };
 
             _repository.AddMessage(msg);
             _repository.SaveChanges();
+
+            if (Request.Headers.TryGetValue("X-Requested-With", out Microsoft.Extensions.Primitives.StringValues value) && value == "XMLHttpRequest")
+            {
+                return PartialView("_Message", msg);
+            }
 
             return RedirectToAction("Index");
         }

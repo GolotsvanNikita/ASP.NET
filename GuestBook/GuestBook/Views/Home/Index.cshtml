@@ -9,7 +9,7 @@
 
 @if (Context.Session.GetString("Name") != null)
 {
-    <form asp-action="AddMessage" method="post">
+    <form id="addMessageForm" asp-action="AddMessage" method="post">
         <div class="form-group">
             <textarea name="message" rows="4" cols="50" placeholder="@Resource.PlaceHoldText"></textarea>
         </div>
@@ -17,20 +17,40 @@
     </form>
 }
 
-@foreach (var msg in Model)
+<div id="messages">
+    @foreach (var msg in Model)
+    {
+        @await Html.PartialAsync("_Message", msg)
+    }
+</div>
+
+@section Scripts
 {
-    <table class="table table-bordered">
-        <tr>
-            <td>@Resource.UserT</td>
-            <td>@msg.User.Name</td>
-        </tr>
-        <tr>
-            <td>@Resource.MessageT</td>
-            <td>@msg.MessageText</td>
-        </tr>
-        <tr>
-            <td>@Resource.DateT</td>
-            <td>@msg.Date.ToString("dd.MM.yyyy HH:mm:ss")</td>
-        </tr>
-    </table>
+    <script>
+        $(document).ready(function ()
+        {
+            $('#addMessageForm').on('submit', function (e)
+            {
+                e.preventDefault();
+                var message = $('textarea[name="message"]', this).val();
+                if (!message)
+                {
+                    return;
+                }
+                $.ajax
+                ({
+                    url: '/Home/AddMessage',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message: message }),
+                    dataType: 'html',
+                    success: function (data)
+                    {
+                        $('#messages').prepend(data);
+                        $('textarea[name="message"]').val('');
+                    }
+                });
+            });
+        });
+    </script>
 }

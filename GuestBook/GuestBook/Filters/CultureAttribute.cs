@@ -15,11 +15,15 @@ namespace GuestBook.Filters
 
             var cultureCookie = context.HttpContext.Request.Cookies["lang"];
             if (cultureCookie != null)
+            {
                 cultureName = cultureCookie;
+            }
             else
+            {
                 cultureName = "en";
+            }
 
-            List<string> cultures = new List<string>() { "en", "uk" };
+            List<string> cultures = ["en", "uk"];
             if (!cultures.Contains(cultureName))
             {
                 cultureName = "en";
