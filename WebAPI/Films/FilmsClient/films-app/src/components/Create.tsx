@@ -1,0 +1,184 @@
+import '../App.css';
+import {type ChangeEvent, type FormEvent, useEffect, useState} from "react";
+import axios from "axios";
+
+interface Film
+{
+    id?: number;
+    name?: string;
+    director?: string;
+    genre?: string;
+    year?: number;
+    description?: string;
+    posterPath?: string;
+}
+
+interface Props
+{
+    onBack: () => void
+}
+
+export function Create({onBack} : Props)
+{
+    const [formData, setFormData] = useState<Film | null>(
+        {
+            id: 0,
+            name: '',
+            director: '',
+            genre: '',
+            year: 0,
+            description: '',
+            posterPath: ''
+        });
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+    const [url, setUrl] = useState<string | null>(null);
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    {
+        const { name, value } = e.target;
+        setFormData(prev =>
+        ({
+            ...prev,
+            [name]: name === 'year' ? Number(value) : value,
+        }));
+    };
+
+    const handleSubmit = async (e: FormEvent) =>
+    {
+        e.preventDefault();
+        if (!formData)
+        {
+            console.error('Form data error');
+            return;
+        }
+
+        const data = new FormData();
+        data.append('Name', formData.name || '');
+        data.append('Director', formData.director || '');
+        data.append('Genre', formData.genre || '');
+        data.append('Year', formData.year?.toString() || '');
+        data.append('Description', formData.description || '');
+        if (uploadedFile)
+        {
+            data.append('uploaded', uploadedFile);
+        }
+
+        try
+        {
+            await axios.post('http://localhost:5075/app/Film', data, {});
+            onBack();
+        }
+        catch (error)
+        {
+            console.error('Error:', error);
+        }
+    };
+
+    useEffect(() =>
+    {
+        return () =>
+        {
+            if (url)
+            {
+                URL.revokeObjectURL(url);
+            }
+        };
+    }, [url]);
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) =>
+    {
+        if (e.target.files && e.target.files[0])
+        {
+            const file = e.target.files[0];
+            setUploadedFile(file);
+
+            const url = URL.createObjectURL(file);
+            setUrl(url);
+
+            return () => URL.revokeObjectURL(url);
+        }
+    };
+
+    return (
+        <div className="CreateFilm">
+            <div className="mainEdit">
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="Name">
+                        Name
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData!.name}
+                            onChange={handleChange}
+                            placeholder="Film Name"
+                            required
+                        />
+                    </label>
+                    <label htmlFor="Director">
+                        Director
+                        <input
+                            type="text"
+                            name="director"
+                            value={formData!.director}
+                            onChange={handleChange}
+                            placeholder="Director"
+                            required
+                        />
+                    </label>
+                    <label htmlFor="Genre">
+                        Genre
+                        <input
+                            type="text"
+                            name="genre"
+                            value={formData!.genre}
+                            onChange={handleChange}
+                            placeholder="Genre"
+                            required
+                        />
+                    </label>
+                    <label htmlFor="Year">
+                        Year
+                        <input
+                            type="number"
+                            name="year"
+                            value={formData!.year}
+                            onChange={handleChange}
+                            placeholder="Year"
+                            required
+                        />
+                    </label>
+                    <label htmlFor="Description">
+                        Description
+                        <input
+                            type="text"
+                            name="description"
+                            value={formData!.description}
+                            onChange={handleChange}
+                            placeholder="Description"
+                            required
+                        />
+                    </label>
+                    <label htmlFor="Poster">
+                        Poster
+                        <input
+                            type="file"
+                            name="uploaded"
+                            onChange={handleFileChange}
+                            accept="image/*"
+                        />
+                    </label>
+                    <div className="buttons">
+                        <button type="submit">Create</button>
+                        <button type="button" onClick={onBack}>Cancel</button>
+                    </div>
+                </form>
+            </div>
+            <div className="poster">
+                <img
+                    src={url || 'http://localhost:5075/images/default.png'}
+                    alt="poster"
+                />
+            </div>
+        </div>
+    );
+}
