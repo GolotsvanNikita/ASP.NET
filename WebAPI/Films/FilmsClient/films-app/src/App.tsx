@@ -66,24 +66,30 @@ function App()
 
     return(
         <div className='App'>
-            <button onClick={() => setCreate(true)}>Create film</button>
+            {films !== undefined || (films as Film[]).length !== 0 ?
+                (<button onClick={() => setCreate(true)}>Create film</button>) :
+                ('')
+            }
             <div className='container'>
-                {films.map((film) =>
-                (
-                    <div className='card' key={film.id}>
-                        <img src={`http://localhost:5075/${film.posterPath}`} alt="poster"/>
-                        <div className='elements'>
-                            <p>{film.name}({film.year})</p>
-                            <p>{film.genre}</p>
-                            <p>{film.director}</p>
-                            <p className='last'>{film.description}</p>
+                {films === undefined || films.length === 0 ?
+                    (<div className='loading'>Loading...</div>) :
+                    (films.map((film) =>
+                    (
+                        <div className='card' key={film.id}>
+                            <img src={`http://localhost:5075/${film.posterPath}`} alt="poster"/>
+                            <div className='elements'>
+                                <p>{film.name}({film.year})</p>
+                                <p>{film.genre}</p>
+                                <p>{film.director}</p>
+                                <p className='last'>{film.description}</p>
+                            </div>
+                            <div className='controls'>
+                                <button onClick={() => setEdit(film)}>Edit</button>
+                                <button onClick={(event) => handleDelete(event, film.id)}>Delete</button>
+                            </div>
                         </div>
-                        <div className='controls'>
-                            <button onClick={() => setEdit(film)}>Edit</button>
-                            <button onClick={(event) => handleDelete(event, film.id)}>Delete</button>
-                        </div>
-                    </div>
-                ))}
+                    )))
+                }
             </div>
         </div>
     )

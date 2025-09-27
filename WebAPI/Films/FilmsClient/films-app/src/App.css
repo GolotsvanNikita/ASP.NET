@@ -1,137 +1,215 @@
-#root {
+#root
+{
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background: linear-gradient(to right, #242424, #e0e0e0 20%, #e0e0e0 40%, #e0e0e0 60%, #e0e0e0 80%, #242424);
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
+.card
+{
   width: 300px;
-  margin: 15px;
-  border: solid rgba(255, 255, 255, 0.6);
+  margin: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #00b7ff40;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
 }
 
 .card:hover
 {
-  border: solid rgba(255, 255, 255, 1);
-}
-
-.read-the-docs {
-  color: #888;
+  border-color: #00b7ff;
+  box-shadow: 0 4px 20px #00b7ff20;
 }
 
 .container
 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1rem;
 }
 
 .card img
 {
-  width: 300px;
+  width: 100%;
   height: 370px;
+  object-fit: cover;
+  border-bottom: 1px solid #00b7ff40;
 }
 
 .controls
 {
   display: flex;
   justify-content: center;
-  margin-top: auto;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.controls button
+{
+  background-color: #1a1a1a;
+  color: #fff;
+  border: solid #0095cc 1px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.controls button:hover
+{
+  background-color: #0095cc;
+  transform: translateY(-2px);
+  box-shadow: 2px 3px 7px 1px rgba(0, 149, 204, 0.7);
 }
 
 .elements
 {
+  padding: 1rem;
   flex-grow: 1;
-  margin: 16px 0;
+  color: #e0e0e0;
+}
+
+.elements p
+{
+  margin: 0.5rem 0;
+  font-size: 1rem;
 }
 
 .last
 {
-  width: 300px;
-  height: 80px;
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  line-height: 1.4;
+  max-height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .block
 {
   display: flex;
-  margin: auto;
-  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  padding: 100px;
+  opacity: 85%;
+  border-radius: 10px;
 }
 
 .poster img
 {
-  width: 300px;
-  height: 350px;
-  border: solid white 3px;
+  width: 400px;
+  height: 450px;
+  border: 2px solid #00b7ff;
+  object-fit: revert;
 }
 
 .poster
 {
-  margin-left: 40px;
+  margin-left: 8rem;
 }
 
 .formValue form label
 {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: 15px;
-  font-weight: bold;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  color: #e0e0e0;
+  font-weight: 600;
 }
 
-.formValue form input
+.formValue form input,
+.formValue form textarea
 {
-  margin-top: 8px;
-  padding: 10px;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
   width: 100%;
-  box-sizing: border-box;
+  background-color: #2a2a2a;
+  border: 1px solid #00b7ff40;
+  border-radius: 6px;
+  color: #e0e0e0;
+  transition: border-color 200ms ease;
+}
+
+.formValue form input:focus,
+.formValue form textarea:focus
+{
+  border-color: #00b7ff;
+  outline: none;
 }
 
 .formValue
 {
   display: flex;
   justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .buttons
 {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 1rem;
   justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.buttons button
+{
+  background-color: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.buttons button:hover
+{
+  background-color: #0095cc;
 }
 
 textarea
 {
-  resize: none;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.loading
+{
+  font-size: 2.5rem;
+  color: #00b7ff;
+  text-align: center;
+  margin: auto;
+  font-weight: 500;
+}
+
+@media (max-width: 768px)
+{
+  .container
+  {
+    grid-template-columns: 1fr;
+  }
+
+  .card
+  {
+    width: 100%;
+    max-width: 350px;
+    margin: 1rem auto;
+  }
+
+  .poster
+  {
+    margin-left: 0;
+    margin-bottom: 1.5rem;
+  }
 }
