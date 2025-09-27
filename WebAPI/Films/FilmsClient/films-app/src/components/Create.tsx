@@ -1,5 +1,5 @@
 import '../App.css';
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {type ChangeEvent, type FormEvent, useEffect, useState} from "react";
 import axios from 'axios';
 
 interface Film
@@ -66,11 +66,11 @@ export function Create({onBack} : Props)
         try
         {
             await axios.post('http://localhost:5075/api/Film/Create', data);
-            await onBack();
+            onBack();
         }
-        catch (error)
+        catch (error: any)
         {
-            console.error('Error:', error.message);
+            console.error('Error:', error);
         }
     };
 
@@ -161,10 +161,11 @@ export function Create({onBack} : Props)
                             id="description"
                             name="description"
                             value={formData!.description}
+                            // @ts-ignore
                             onChange={handleChange}
                             placeholder="Description"
-                            rows='10'
-                            cols='25'
+                            rows={10}
+                            cols={25}
                             required
                         />
                     </label>
