@@ -81,3 +81,57 @@
   height: 80px;
 }
 
+.block
+{
+  display: flex;
+  margin: auto;
+  height: 100vh;
+}
+
+.poster img
+{
+  width: 300px;
+  height: 350px;
+  border: solid white 3px;
+}
+
+.poster
+{
+  margin-left: 40px;
+}
+
+.formValue form label
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.formValue form input
+{
+  margin-top: 8px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.formValue
+{
+  display: flex;
+  justify-content: center;
+}
+
+.buttons
+{
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+textarea
+{
+  resize: none;
+}

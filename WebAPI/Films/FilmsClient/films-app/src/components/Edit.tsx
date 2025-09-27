@@ -1,5 +1,5 @@
 import '../App.css';
-import {useState, type ChangeEvent, type FormEvent, useEffect} from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 
 interface Film
@@ -23,7 +23,7 @@ export function Edit({ film, onBack }: EditProps)
 {
     const [formData, setFormData] = useState<Film>({ ...film });
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-    const [url, setUrl] = useState<string | null>(null)
+    const [url, setUrl] = useState<string | null>(null);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     {
@@ -42,14 +42,12 @@ export function Edit({ film, onBack }: EditProps)
             const file = e.target.files[0];
             setUploadedFile(file);
 
-            const url = URL.createObjectURL(file);
-            setUrl(url);
-
-            return () => URL.revokeObjectURL(url)
+            const objectUrl = URL.createObjectURL(file);
+            setUrl(objectUrl);
         }
     };
 
-    const handleSubmit = async (e : FormEvent) =>
+    const handleSubmit = async (e: FormEvent) =>
     {
         e.preventDefault();
         const data = new FormData();
@@ -66,13 +64,7 @@ export function Edit({ film, onBack }: EditProps)
 
         try
         {
-            await axios.put(`http://localhost:5075/app/Film/${formData.id}`, data,
-            {
-                headers:
-                {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            await axios.put(`http://localhost:5075/api/Film/${formData.id}`, data);
             onBack();
         }
         catch (error)
@@ -93,74 +85,93 @@ export function Edit({ film, onBack }: EditProps)
     }, [url]);
 
     return (
-        <div className="Edit">
-            <div className="mainEdit">
+        <div className="block">
+            <div className="formValue">
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="Name">
+                    <label htmlFor="name">
                         Name
                         <input
+                            id="name"
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="Film Name"
+                            required
                         />
                     </label>
-                    <label htmlFor="Director">
+
+                    <label htmlFor="director">
                         Director
                         <input
+                            id="director"
                             type="text"
                             name="director"
                             value={formData.director}
                             onChange={handleChange}
                             placeholder="Director"
+                            required
                         />
                     </label>
-                    <label htmlFor="Genre">
+
+                    <label htmlFor="genre">
                         Genre
                         <input
+                            id="genre"
                             type="text"
                             name="genre"
                             value={formData.genre}
                             onChange={handleChange}
                             placeholder="Genre"
+                            required
                         />
                     </label>
-                    <label htmlFor="Year">
+
+                    <label htmlFor="year">
                         Year
                         <input
+                            id="year"
                             type="number"
                             name="year"
                             value={formData.year}
                             onChange={handleChange}
                             placeholder="Year"
+                            required
                         />
                     </label>
-                    <label htmlFor="Description">
+
+                    <label htmlFor="description">
                         Description
-                        <input
-                            type="text"
+                        <textarea
+                            id="description"
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
                             placeholder="Description"
+                            rows='10'
+                            cols='25'
+                            required
                         />
                     </label>
-                    <label htmlFor="Poster">
+
+                    <label htmlFor="poster">
                         Poster
                         <input
+                            id="poster"
                             type="file"
                             name="uploaded"
                             onChange={handleFileChange}
                             accept="image/*"
                         />
                     </label>
+
                     <div className="buttons">
                         <button type="submit">Save</button>
                         <button type="button" onClick={onBack}>Cancel</button>
                     </div>
                 </form>
             </div>
+
             <div className="poster">
                 <img
                     src={url || `http://localhost:5075/${formData.posterPath}`}

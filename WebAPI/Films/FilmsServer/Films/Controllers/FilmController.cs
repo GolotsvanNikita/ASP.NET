@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Films.Controllers
 {
     [ApiController]
-    [Route("app/[controller]")]
+    [Route("api/[controller]")]
     public class FilmController : Controller
     {
         ApplicationDbContext _context;
@@ -75,8 +75,8 @@ namespace Films.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id,Name,Director,Year,Genre,Description")] Film film, IFormFile uploaded)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create([FromForm] Film film, [FromForm] IFormFile? uploaded)
         {
             ModelState.Remove("uploaded");
 
@@ -86,10 +86,10 @@ namespace Films.Controllers
             }
 
             bool exists = await _context.Films.AnyAsync(f =>
-                f.Name != null && film.Name != null &&
-                f.Director != null && film.Director != null &&
-                string.Equals(f.Name, film.Name, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(f.Director, film.Director, StringComparison.OrdinalIgnoreCase) &&
+                f.Name != null &&
+                f.Director != null &&
+                f.Name.ToLower() == film.Name!.ToLower() &&
+                f.Director.ToLower() == film.Director!.ToLower() &&
                 f.Year == film.Year);
 
             if (exists)
