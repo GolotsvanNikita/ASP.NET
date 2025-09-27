@@ -23,14 +23,14 @@ function App()
 
     useEffect(() =>
     {
-        axios.get<Film[]>('http://localhost:5075/app/Film')
+        axios.get<Film[]>('http://localhost:5075/api/Film')
             .then(response =>
             {
                 setFilms(response.data);
             })
             .catch(error =>
             {
-                console.error('Error: ', error);
+                console.error('Error: ', error.message);
             })
     }, films);
 
@@ -38,7 +38,7 @@ function App()
     {
         setEdit(null);
         setCreate(null);
-    }
+    };
 
     if (edit)
     {
@@ -56,15 +56,13 @@ function App()
         let isConfirm : boolean = confirm('Delete?');
         if (isConfirm)
         {
-            axios.delete(`http://localhost:5075/app/Film/${id}`)
+            axios.delete(`http://localhost:5075/api/Film/${id}`)
                 .catch(error =>
                 {
                     console.error('Error: ', error);
                 });
         }
-    }
-
-    films.forEach(film => console.log(film.posterPath));
+    };
 
     return(
         <div className='App'>

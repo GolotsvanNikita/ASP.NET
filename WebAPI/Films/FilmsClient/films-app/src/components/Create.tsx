@@ -1,6 +1,6 @@
 import '../App.css';
-import {type ChangeEvent, type FormEvent, useEffect, useState} from "react";
-import axios from "axios";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import axios from 'axios';
 
 interface Film
 {
@@ -65,12 +65,12 @@ export function Create({onBack} : Props)
 
         try
         {
-            await axios.post('http://localhost:5075/app/Film', data, {});
-            onBack();
+            await axios.post('http://localhost:5075/api/Film/Create', data);
+            await onBack();
         }
         catch (error)
         {
-            console.error('Error:', error);
+            console.error('Error:', error.message);
         }
     };
 
@@ -100,12 +100,13 @@ export function Create({onBack} : Props)
     };
 
     return (
-        <div className="CreateFilm">
-            <div className="mainEdit">
+        <div className="block">
+            <div className="formValue">
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="Name">
+                    <label htmlFor="name">
                         Name
                         <input
+                            id="name"
                             type="text"
                             name="name"
                             value={formData!.name}
@@ -114,9 +115,11 @@ export function Create({onBack} : Props)
                             required
                         />
                     </label>
-                    <label htmlFor="Director">
+
+                    <label htmlFor="director">
                         Director
                         <input
+                            id="director"
                             type="text"
                             name="director"
                             value={formData!.director}
@@ -125,9 +128,11 @@ export function Create({onBack} : Props)
                             required
                         />
                     </label>
-                    <label htmlFor="Genre">
+
+                    <label htmlFor="genre">
                         Genre
                         <input
+                            id="genre"
                             type="text"
                             name="genre"
                             value={formData!.genre}
@@ -136,9 +141,11 @@ export function Create({onBack} : Props)
                             required
                         />
                     </label>
-                    <label htmlFor="Year">
+
+                    <label htmlFor="year">
                         Year
                         <input
+                            id="year"
                             type="number"
                             name="year"
                             value={formData!.year}
@@ -147,20 +154,25 @@ export function Create({onBack} : Props)
                             required
                         />
                     </label>
-                    <label htmlFor="Description">
+
+                    <label htmlFor="description">
                         Description
-                        <input
-                            type="text"
+                        <textarea
+                            id="description"
                             name="description"
                             value={formData!.description}
                             onChange={handleChange}
                             placeholder="Description"
+                            rows='10'
+                            cols='25'
                             required
                         />
                     </label>
-                    <label htmlFor="Poster">
+
+                    <label htmlFor="poster">
                         Poster
                         <input
+                            id="poster"
                             type="file"
                             name="uploaded"
                             onChange={handleFileChange}
